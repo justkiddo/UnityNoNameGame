@@ -20,6 +20,7 @@ namespace root
             Container.Bind<PlayerInfo>().FromInstance(playerInfo);
             Container.Bind<Enemy>().FromInstance(enemy).AsSingle().NonLazy();
             Container.Bind<IPlayer>().FromInstance(playerPrefab);
+            
             foreach (var enemyInfo in enemyInfos)
             {
                 Container.Bind<EnemyInfo>().FromInstance(enemyInfo);

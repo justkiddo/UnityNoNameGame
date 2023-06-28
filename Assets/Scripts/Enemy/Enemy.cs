@@ -1,8 +1,5 @@
-﻿using System;
-using UnityEngine;
-using System.Collections;
+﻿using UnityEngine;
 using Zenject;
-using Transform = log4net.Util.Transform;
 
 namespace root
 {
@@ -26,7 +23,6 @@ namespace root
             _health = _enemyInfo.Health;
             _speed = _enemyInfo.Speed;
             _damage = _enemyInfo.Damage;
-            Debug.Log(_player.GetCurrentPosition());
         }
 
 
