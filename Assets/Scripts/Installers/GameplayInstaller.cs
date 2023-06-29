@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Zenject;
 
 namespace root
@@ -12,6 +10,7 @@ namespace root
         [SerializeField] private List<EnemyInfo> enemyInfos;
         [SerializeField] private Enemy enemy;
         [SerializeField] private Player playerPrefab;
+        [SerializeField] private List<PlayerHitCollider> _hitColliders;
         private IPlayer _playerPrefab;
         
 
@@ -20,7 +19,11 @@ namespace root
             Container.Bind<PlayerInfo>().FromInstance(playerInfo);
             Container.Bind<Enemy>().FromInstance(enemy).AsSingle().NonLazy();
             Container.Bind<IPlayer>().FromInstance(playerPrefab);
-            
+
+            foreach (var pCollider in _hitColliders)
+            {
+                Container.Bind<PlayerHitCollider>().FromInstance(pCollider);
+            }
             foreach (var enemyInfo in enemyInfos)
             {
                 Container.Bind<EnemyInfo>().FromInstance(enemyInfo);

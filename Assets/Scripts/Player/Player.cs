@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
+using JetBrains.Annotations;
 using Zenject;
 
 namespace root
@@ -13,14 +15,16 @@ namespace root
         [SerializeField] float m_rollForce = 6.0f;
         [SerializeField] bool m_noBlood = false;
         [SerializeField] GameObject m_slideDust;
-
+        private PlayerHitCollider hitColliderL1;
+        private PlayerHitCollider hitColliderR1;
+        
         private Animator m_animator;
         private Rigidbody2D m_body2d;
-        private Sensor_HeroKnight m_groundSensor;
-        private Sensor_HeroKnight m_wallSensorR1;
-        private Sensor_HeroKnight m_wallSensorR2;
-        private Sensor_HeroKnight m_wallSensorL1;
-        private Sensor_HeroKnight m_wallSensorL2;
+        private PlayerSensor _mGroundPlayerSensor;
+        private PlayerSensor _mWallPlayerSensorR1;
+        private PlayerSensor _mWallPlayerSensorR2;
+        private PlayerSensor _mWallPlayerSensorL1;
+        private PlayerSensor _mWallPlayerSensorL2;
         private bool m_isWallSliding = false;
         private bool m_grounded = false;
         private bool m_rolling = false;
@@ -33,11 +37,16 @@ namespace root
         private bool _isBlocking = false;
         private bool _rollingAvailiable = true;
         private PlayerInfo _playerInfo;
-
         
+        
+        //[SerializeField] private Collider2D enemyCollider;
+        private Enemy _enemy;
+
+
         [Inject]
-        private void Construct(PlayerInfo playerInfo)
+        private void Construct(PlayerInfo playerInfo, Enemy enemy)
         {
+            _enemy = enemy;
             _playerInfo = playerInfo;
         }
         
@@ -46,12 +55,14 @@ namespace root
         {
             m_animator = GetComponent<Animator>();
             m_body2d = GetComponent<Rigidbody2D>();
-            m_groundSensor = transform.Find("GroundSensor").GetComponent<Sensor_HeroKnight>();
-            m_wallSensorR1 = transform.Find("WallSensor_R1").GetComponent<Sensor_HeroKnight>();
-            m_wallSensorR2 = transform.Find("WallSensor_R2").GetComponent<Sensor_HeroKnight>();
-            m_wallSensorL1 = transform.Find("WallSensor_L1").GetComponent<Sensor_HeroKnight>();
-            m_wallSensorL2 = transform.Find("WallSensor_L2").GetComponent<Sensor_HeroKnight>();
-
+            _mGroundPlayerSensor = transform.Find("GroundSensor").GetComponent<PlayerSensor>();
+            _mWallPlayerSensorR1 = transform.Find("WallSensor_R1").GetComponent<PlayerSensor>();
+            _mWallPlayerSensorR2 = transform.Find("WallSensor_R2").GetComponent<PlayerSensor>();
+            _mWallPlayerSensorL1 = transform.Find("WallSensor_L1").GetComponent<PlayerSensor>();
+            _mWallPlayerSensorL2 = transform.Find("WallSensor_L2").GetComponent<PlayerSensor>();
+            
+            hitColliderL1 = transform.Find("HitCollider L1").GetComponent<PlayerHitCollider>();
+            hitColliderR1 = transform.Find("HitCollider R1").GetComponent<PlayerHitCollider>();
             _health = _playerInfo.Health;
             _mSpeed = _playerInfo.Speed;
             _mJumpForce = _playerInfo.JumpHeight;
@@ -75,14 +86,14 @@ namespace root
                 m_rolling = false;
 
             //Check if character just landed on the ground
-            if (!m_grounded && m_groundSensor.State())
+            if (!m_grounded && _mGroundPlayerSensor.State())
             {
                 m_grounded = true;
                 m_animator.SetBool("Grounded", m_grounded);
             }
 
             //Check if character just started falling
-            if (m_grounded && !m_groundSensor.State())
+            if (m_grounded && !_mGroundPlayerSensor.State())
             {
                 m_grounded = false;
                 m_animator.SetBool("Grounded", m_grounded);
@@ -115,8 +126,8 @@ namespace root
 
             // -- Handle Animations --
             //Wall Slide
-            m_isWallSliding = (m_wallSensorR1.State() && m_wallSensorR2.State()) ||
-                              (m_wallSensorL1.State() && m_wallSensorL2.State());
+            m_isWallSliding = (_mWallPlayerSensorR1.State() && _mWallPlayerSensorR2.State()) ||
+                              (_mWallPlayerSensorL1.State() && _mWallPlayerSensorL2.State());
             m_animator.SetBool("WallSlide", m_isWallSliding);
 
             //Death
@@ -148,7 +159,27 @@ namespace root
 
                 // Reset timer
                 m_timeSinceAttack = 0.0f;
+
+                // enemy hit check
+                if (Input.GetMouseButtonDown(0) && GetComponent<SpriteRenderer>().flipX)
+                {
+                    foreach (var enemy in hitColliderL1.enemies)
+                    {
+                        enemy._health -= 5;
+                    }
+                }
+                
+                if (Input.GetMouseButtonDown(0) && GetComponent<SpriteRenderer>().flipX == false)
+                {
+                    foreach (var enemy in hitColliderR1.enemies)
+                    {
+                        enemy._health -= 5;
+                    }
+                }
             }
+            
+            
+            
 
             // Block
             else if (Input.GetMouseButtonDown(1) && !m_rolling)
@@ -181,7 +212,7 @@ namespace root
                 m_grounded = false;
                 m_animator.SetBool("Grounded", m_grounded);
                 m_body2d.velocity = new Vector2(m_body2d.velocity.x, _mJumpForce);
-                m_groundSensor.Disable(0.2f);
+                _mGroundPlayerSensor.Disable(0.2f);
             }
 
             //Run
@@ -201,6 +232,8 @@ namespace root
                     m_animator.SetInteger("AnimState", 0);
             }
         }
+        
+
 
         // Animation Events
         // Called in slide animation.
@@ -209,9 +242,9 @@ namespace root
             Vector3 spawnPosition;
 
             if (m_facingDirection == 1)
-                spawnPosition = m_wallSensorR2.transform.position;
+                spawnPosition = _mWallPlayerSensorR2.transform.position;
             else
-                spawnPosition = m_wallSensorL2.transform.position;
+                spawnPosition = _mWallPlayerSensorL2.transform.position;
 
             if (m_slideDust != null)
             {

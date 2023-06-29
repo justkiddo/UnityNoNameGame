@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Sensor_HeroKnight : MonoBehaviour {
+public class PlayerSensor : MonoBehaviour {
 
     private int m_ColCount = 0;
 
