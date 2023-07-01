@@ -8,6 +8,8 @@ namespace root
     public class Enemy : MonoBehaviour, IEnemy
     {
         [SerializeField] private bool follow;
+        [SerializeField]private EnemyHitCollider enemyHitColliderL1;
+        [SerializeField]private EnemyHitCollider enemyHitColliderR1;
         public float _health;
         private float _speed;
         private float _damage;
@@ -18,6 +20,7 @@ namespace root
         private float _tempHealth;
         private bool _damageTaken;
         private Collider2D _enemyCollider2D;
+        private bool attacking;
         
         [Inject]
         private void Construct(EnemyInfo enemyInfo, IPlayer player)
@@ -44,6 +47,31 @@ namespace root
             FLipCheck();
             DamageCheck();
             DeathCheck();
+            AttackPlayer();
+        }
+
+        private void AttackPlayer()
+        {
+            if (enemyHitColliderL1.playerNear | enemyHitColliderR1.playerNear && !attacking && _player.GetHealth() >= 0)
+            {
+                attacking = true;
+                _animator.SetTrigger("Attack");
+                _player.TakeDamage(_damage);
+                StartCoroutine(ResetTriggerAttack());
+            }
+            
+        }
+
+        private IEnumerator ResetTriggerAttack()
+        {
+            if (_damageTaken)
+            {
+                _damageTaken = false;
+                attacking = false;
+                yield break;
+            }
+            yield return new WaitForSeconds(1);
+            attacking = false;
         }
 
         private void DeathCheck()
@@ -65,17 +93,21 @@ namespace root
         {
             if (Math.Abs(_health - _tempHealth) > 0)
             {
+                _damageTaken = true;
                 _animator.SetTrigger("Hurt");
                 _tempHealth = _health;
-                StartCoroutine(ResetTrigger());
+                StartCoroutine(ResetTriggerHurt());
             }
             
         }
+        
 
-        private IEnumerator ResetTrigger()
+        
+        private IEnumerator ResetTriggerHurt()
         {
             yield return new WaitForSeconds(1);
             _animator.ResetTrigger("Hurt");
+            _damageTaken = false;
         }
 
         private void FLipCheck()
@@ -100,7 +132,5 @@ namespace root
                     Time.deltaTime * _speed);
             }
         }
-
-        public Collider2D GetEnemyCollider() => _enemyCollider2D;
     }
 }

@@ -10,7 +10,8 @@ namespace root
         [SerializeField] private List<EnemyInfo> enemyInfos;
         [SerializeField] private Enemy enemy;
         [SerializeField] private Player playerPrefab;
-        [SerializeField] private List<PlayerHitCollider> _hitColliders;
+        [SerializeField] private List<PlayerHitCollider> playerHitColliders;
+        
         private IPlayer _playerPrefab;
         
 
@@ -20,7 +21,7 @@ namespace root
             Container.Bind<Enemy>().FromInstance(enemy).AsSingle().NonLazy();
             Container.Bind<IPlayer>().FromInstance(playerPrefab);
 
-            foreach (var pCollider in _hitColliders)
+            foreach (var pCollider in playerHitColliders)
             {
                 Container.Bind<PlayerHitCollider>().FromInstance(pCollider);
             }

@@ -7,7 +7,6 @@ namespace root
 {
     interface IEnemy
     {
-        Collider2D GetEnemyCollider();
 
     }
 }
