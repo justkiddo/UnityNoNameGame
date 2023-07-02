@@ -11,6 +11,7 @@ public class SceneChanger : MonoBehaviour
     [SerializeField] private Button settingsButton;
     [SerializeField] private Button backButton;
     [SerializeField] private Button quitButton;
+    [SerializeField] private Button restartButton;
     private bool _clickBlocker = false;
 
     private void Awake()
@@ -19,12 +20,12 @@ public class SceneChanger : MonoBehaviour
         settingsButton?.onClick.AddListener(OnSettingsButtonsClick);
         quitButton?.onClick.AddListener(OnQuitButtonsClick);
         backButton?.onClick.AddListener(OnBackButtonClick);
+        restartButton?.onClick.AddListener(OnRestartButtonClick);
     }
 
-
-    void Update()
+    private void OnRestartButtonClick()
     {
-
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     private void OnBackButtonClick()

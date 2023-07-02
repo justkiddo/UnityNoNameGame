@@ -27,6 +27,18 @@ MonoBehaviour:
     m_Key: quit.button
     m_Metadata:
       m_Items: []
+  - m_Id: 3686051418468352
+    m_Key: endgame.restart
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3686133777821696
+    m_Key: endgame.main.menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3686247804170240
+    m_Key: endgame.quit
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

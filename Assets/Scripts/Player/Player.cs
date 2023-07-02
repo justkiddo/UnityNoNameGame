@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using JetBrains.Annotations;
 using Zenject;
+using Object = UnityEngine.Object;
 
 namespace root
 {
@@ -26,7 +27,7 @@ namespace root
         // private PlayerSensor _mWallPlayerSensorL2;
         private bool m_isWallSliding = false;
         private bool _isGrounded = false;
-        private bool isRolling = false;
+        private bool _isRolling = false;
         private int m_facingDirection = 1;
         private int m_currentAttack = 0;
         private float m_timeSinceAttack = 0.0f;
@@ -41,6 +42,7 @@ namespace root
         //[SerializeField] private Collider2D enemyCollider;
         private Enemy _enemy;
         private bool isDead;
+        [SerializeField] private GameObject endgameMenu;
 
 
         [Inject]
@@ -74,159 +76,157 @@ namespace root
         // Update is called once per frame
         void Update()
         {
-            // Increase timer that controls attack combo
-            m_timeSinceAttack += Time.deltaTime;
-
-            // Increase timer that checks roll duration
-            if (isRolling)
-                m_rollCurrentTime += Time.deltaTime;
-
-            // Disable rolling if timer extends duration
-            if (m_rollCurrentTime > m_rollDuration)
-                isRolling = false;
-
-            //Check if character just landed on the ground
-            if (!_isGrounded && _mGroundPlayerSensor.State())
+            if (!isDead)
             {
-                _isGrounded = true;
-                m_animator.SetBool("Grounded", _isGrounded);
-            }
+                // Increase timer that controls attack combo
+                m_timeSinceAttack += Time.deltaTime;
 
-            //Check if character just started falling
-            if (_isGrounded && !_mGroundPlayerSensor.State())
-            {
-                _isGrounded = false;
-                m_animator.SetBool("Grounded", _isGrounded);
-            }
-            
-            
-            // -- Handle input and movement --
-            float inputX = Input.GetAxis("Horizontal");
+                // Increase timer that checks roll duration
+                if (_isRolling)
+                    m_rollCurrentTime += Time.deltaTime;
 
-            // Swap direction of sprite depending on walk direction
-            if (inputX > 0)
-            {
-                GetComponent<SpriteRenderer>().flipX = false;
-                m_facingDirection = 1;
-            }
+                // Disable rolling if timer extends duration
+                if (m_rollCurrentTime > m_rollDuration)
+                    _isRolling = false;
 
-            else if (inputX < 0)
-            {
-                GetComponent<SpriteRenderer>().flipX = true;
-                m_facingDirection = -1;
-            }
-
-            // Move
-            if (!isRolling && !_isBlocking)
-            {
-                m_body2d.velocity = new Vector2(inputX * _mSpeed, m_body2d.velocity.y);
-            }
-
-            //Set AirSpeed in animator
-            m_animator.SetFloat("AirSpeedY", m_body2d.velocity.y);
-
-
-
-            //Attack
-             if (Input.GetMouseButtonDown(0) && m_timeSinceAttack > 0.25f && !isRolling)
-            {
-                m_currentAttack++;
-
-                // Loop back to one after third attack
-                if (m_currentAttack > 3)
-                    m_currentAttack = 1;
-
-                // Reset Attack combo if time since last attack is too large
-                if (m_timeSinceAttack > 1.0f)
-                    m_currentAttack = 1;
-
-                // Call one of three attack animations "Attack1", "Attack2", "Attack3"
-                m_animator.SetTrigger("Attack" + m_currentAttack);
-
-                // Reset timer
-                m_timeSinceAttack = 0.0f;
-
-                // enemy hit check
-                if (Input.GetMouseButtonDown(0) && GetComponent<SpriteRenderer>().flipX)
+                //Check if character just landed on the ground
+                if (!_isGrounded && _mGroundPlayerSensor.State())
                 {
-                    foreach (var enemy in _hitColliderL1.enemies)
-                    {
-                        enemy._health -= 5;
-                    }
+                    _isGrounded = true;
+                    m_animator.SetBool("Grounded", _isGrounded);
                 }
+
+                //Check if character just started falling
+                if (_isGrounded && !_mGroundPlayerSensor.State())
+                {
+                    _isGrounded = false;
+                    m_animator.SetBool("Grounded", _isGrounded);
+                }
+            
+            
+                // -- Handle input and movement --
+                float inputX = Input.GetAxis("Horizontal");
+
+                // Swap direction of sprite depending on walk direction
+                if (inputX > 0)
+                {
+                    GetComponent<SpriteRenderer>().flipX = false;
+                    m_facingDirection = 1;
+                }
+
+                else if (inputX < 0)
+                {
+                    GetComponent<SpriteRenderer>().flipX = true;
+                    m_facingDirection = -1;
+                }
+
+                // Move
+                if (!_isRolling && !_isBlocking)
+                {
+                    m_body2d.velocity = new Vector2(inputX * _mSpeed, m_body2d.velocity.y);
+                }
+
+                //Set AirSpeed in animator
+                m_animator.SetFloat("AirSpeedY", m_body2d.velocity.y);
+
+
+
+                //Attack
+                if (Input.GetMouseButtonDown(0) && m_timeSinceAttack > 0.25f && !_isRolling)
+                {
+                    m_currentAttack++;
+
+                    // Loop back to one after third attack
+                    if (m_currentAttack > 3)
+                        m_currentAttack = 1;
+
+                    // Reset Attack combo if time since last attack is too large
+                    if (m_timeSinceAttack > 1.0f)
+                        m_currentAttack = 1;
+
+                    // Call one of three attack animations "Attack1", "Attack2", "Attack3"
+                    m_animator.SetTrigger("Attack" + m_currentAttack);
+
+                    // Reset timer
+                    m_timeSinceAttack = 0.0f;
+
+                    // enemy hit check
+                    if (Input.GetMouseButtonDown(0) && GetComponent<SpriteRenderer>().flipX)
+                    {
+                        foreach (var enemy in _hitColliderL1.enemies)
+                        {
+                            enemy._health -= 5;
+                        }
+                    }
                 
-                if (Input.GetMouseButtonDown(0) && GetComponent<SpriteRenderer>().flipX == false)
-                {
-                    foreach (var enemy in _hitColliderR1.enemies)
+                    if (Input.GetMouseButtonDown(0) && GetComponent<SpriteRenderer>().flipX == false)
                     {
-                        enemy._health -= 5;
+                        foreach (var enemy in _hitColliderR1.enemies)
+                        {
+                            enemy._health -= 5;
+                        }
                     }
                 }
-            }
             
             
             
 
-            // Block
-            else if (Input.GetMouseButtonDown(1) && !isRolling && _isGrounded)
-            {
-                _isBlocking = true;
-                _rollingAvailiable = false;
-                m_animator.SetTrigger("Block");
-                m_animator.SetBool("IdleBlock", true);
-            }
+                // Block
+                else if (Input.GetMouseButtonDown(1) && !_isRolling && _isGrounded)
+                {
+                    _isBlocking = true;
+                    _rollingAvailiable = false;
+                    m_animator.SetTrigger("Block");
+                    m_animator.SetBool("IdleBlock", true);
+                }
 
-            else if (Input.GetMouseButtonUp(1))
-            {
-                _isBlocking = false;
-                _rollingAvailiable = true;
-                m_animator.SetBool("IdleBlock", false);
-            }
-            // Roll
-            else if (Input.GetKeyDown("left shift") && !isRolling && !m_isWallSliding && _rollingAvailiable)
-            {
-                isRolling = true;
-                m_animator.SetTrigger("Roll");
-                m_body2d.velocity = new Vector2(m_facingDirection * m_rollForce, m_body2d.velocity.y);
-            }
+                else if (Input.GetMouseButtonUp(1))
+                {
+                    _isBlocking = false;
+                    _rollingAvailiable = true;
+                    m_animator.SetBool("IdleBlock", false);
+                }
+                // Roll
+                else if (Input.GetKeyDown("left shift") && !_isRolling && !m_isWallSliding && _rollingAvailiable)
+                {
+                    _isRolling = true;
+                    m_animator.SetTrigger("Roll");
+                    m_body2d.velocity = new Vector2(m_facingDirection * m_rollForce, m_body2d.velocity.y);
+                }
 
 
-            //Jump
-            else if (Input.GetKeyDown("space") && _isGrounded && !isRolling)
-            {
-                m_animator.SetTrigger("Jump");
-                _isGrounded = false;
-                m_animator.SetBool("Grounded", _isGrounded);
-                m_body2d.velocity = new Vector2(m_body2d.velocity.x, _mJumpForce);
-                _mGroundPlayerSensor.Disable(0.2f);
-            }
+                //Jump
+                else if (Input.GetKeyDown("space") && _isGrounded && !_isRolling)
+                {
+                    m_animator.SetTrigger("Jump");
+                    _isGrounded = false;
+                    m_animator.SetBool("Grounded", _isGrounded);
+                    m_body2d.velocity = new Vector2(m_body2d.velocity.x, _mJumpForce);
+                    _mGroundPlayerSensor.Disable(0.2f);
+                }
 
-            //Run
-            else if (Mathf.Abs(inputX) > Mathf.Epsilon)
-            {
-                // Reset timer
-                m_delayToIdle = 0.05f;
-                m_animator.SetInteger("AnimState", 1);
-            }
+                //Run
+                else if (Mathf.Abs(inputX) > Mathf.Epsilon)
+                {
+                    // Reset timer
+                    m_delayToIdle = 0.05f;
+                    m_animator.SetInteger("AnimState", 1);
+                }
 
-            //Idle
-            else
-            {
-                // Prevents flickering transitions to idle
-                m_delayToIdle -= Time.deltaTime;
-                if (m_delayToIdle < 0)
-                    m_animator.SetInteger("AnimState", 0);
-            }
+                //Idle
+                else
+                {
+                    // Prevents flickering transitions to idle
+                    m_delayToIdle -= Time.deltaTime;
+                    if (m_delayToIdle < 0)
+                        m_animator.SetInteger("AnimState", 0);
+                }
             
-            FrictionSetup();
+                FrictionSetup();
+            }
         }
 
-        private void DeathCheck()
-        {
-           
-        }
 
- 
 
         private void FrictionSetup()
         {
@@ -253,6 +253,7 @@ namespace root
                     isDead = true;
                     m_animator.ResetTrigger("Hurt");
                     m_animator.SetTrigger("Death");
+                    endgameMenu.SetActive(true);
                 }
             }
         }

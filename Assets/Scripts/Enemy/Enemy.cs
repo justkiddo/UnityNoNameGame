@@ -37,6 +37,7 @@ namespace root
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _animator = GetComponent<Animator>();
             _tempHealth = _health;
+            follow = true;
         }
 
 
@@ -59,7 +60,6 @@ namespace root
                 _player.TakeDamage(_damage);
                 StartCoroutine(ResetTriggerAttack());
             }
-            
         }
 
         private IEnumerator ResetTriggerAttack()
@@ -125,11 +125,15 @@ namespace root
 
         private void FollowPlayer()
         {
-            if (follow)
+            if (follow && _player.GetHealth() >= 0)
             {
                 _animator.SetInteger("AnimState", 2);
                 transform.position = Vector3.MoveTowards(transform.position, _player.GetCurrentPosition(),
                     Time.deltaTime * _speed);
+            }
+            else
+            {
+                follow = false;
             }
         }
     }

@@ -30,6 +30,18 @@ MonoBehaviour:
     m_Localized: Quit
     m_Metadata:
       m_Items: []
+  - m_Id: 3686051418468352
+    m_Localized: Restart
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3686133777821696
+    m_Localized: Main menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3686247804170240
+    m_Localized: Quit
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

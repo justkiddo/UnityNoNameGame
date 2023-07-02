@@ -13,14 +13,16 @@ namespace root
         [SerializeField] private List<PlayerHitCollider> playerHitColliders;
         
         private IPlayer _playerPrefab;
-        
+        [SerializeField] private EndGamePanel endgamePanel;
+
 
         public override void InstallBindings()
         {
+            Container.Bind<IUnityLocalization>().To<UnityLocalization>().AsSingle().NonLazy();
             Container.Bind<PlayerInfo>().FromInstance(playerInfo);
             Container.Bind<Enemy>().FromInstance(enemy).AsSingle().NonLazy();
             Container.Bind<IPlayer>().FromInstance(playerPrefab);
-
+            Container.BindInterfacesTo<EndGamePanel>().FromInstance(endgamePanel).AsSingle().NonLazy();
             foreach (var pCollider in playerHitColliders)
             {
                 Container.Bind<PlayerHitCollider>().FromInstance(pCollider);
