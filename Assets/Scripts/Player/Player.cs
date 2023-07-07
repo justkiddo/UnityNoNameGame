@@ -222,7 +222,7 @@ namespace root
                         m_animator.SetInteger("AnimState", 0);
                 }
             
-                FrictionSetup();
+                //   FrictionSetup();
             }
         }
 
@@ -230,7 +230,7 @@ namespace root
 
         private void FrictionSetup()
         {
-            if (_isGrounded && !_isBlocking)
+            if (_isGrounded | _isBlocking)
             {
                 playerMat.friction = 55;
             }

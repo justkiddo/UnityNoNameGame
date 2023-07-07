@@ -78,6 +78,7 @@ namespace root
         {
             if (_health <= 0)
             {
+                attacking = true;
                 _animator.SetTrigger("Death");
                 StartCoroutine(DestroyEnemy());
             }
