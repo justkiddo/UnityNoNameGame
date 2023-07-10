@@ -57,7 +57,7 @@ namespace root
             {
                 attacking = true;
                 _animator.SetTrigger("Attack");
-                _player.TakeDamage(_damage);
+                
                 StartCoroutine(ResetTriggerAttack());
             }
         }
@@ -70,14 +70,19 @@ namespace root
                 attacking = false;
                 yield break;
             }
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(0.5f);
             attacking = false;
+            if (enemyHitColliderL1.playerNear | enemyHitColliderR1.playerNear && !attacking && _player.GetHealth() >= 0)
+            {
+                _player.TakeDamage(_damage);
+            }
         }
 
         private void DeathCheck()
         {
             if (_health <= 0)
             {
+                follow = false;
                 attacking = true;
                 _animator.SetTrigger("Death");
                 StartCoroutine(DestroyEnemy());
