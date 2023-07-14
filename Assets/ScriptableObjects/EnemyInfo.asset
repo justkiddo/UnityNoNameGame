@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93c9ca0d3f3b0a944813bf8401b87e82, type: 3}
   m_Name: EnemyInfo
   m_EditorClassIdentifier: 
-  <Health>k__BackingField: 20
+  <Health>k__BackingField: 50
   <Speed>k__BackingField: 2
-  <Damage>k__BackingField: 15
+  <Damage>k__BackingField: 10
   <Prefab>k__BackingField: {fileID: 7686388887930135856, guid: ac96a841821ad604d8c4a88590a37514, type: 3}
+  <FollowDistance>k__BackingField: 5

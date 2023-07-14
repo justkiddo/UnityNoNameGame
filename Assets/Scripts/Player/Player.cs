@@ -13,6 +13,7 @@ namespace root
         float _mSpeed = 4.0f;
         float _mJumpForce = 7.5f;
         private float _health;
+        private float _damage;
         [SerializeField] float m_rollForce = 6.0f;
         private PlayerHitCollider _hitColliderL1;
         private PlayerHitCollider _hitColliderR1;
@@ -34,14 +35,14 @@ namespace root
         private float m_delayToIdle = 0.0f;
         private float m_rollDuration = 8.0f / 14.0f;
         private float m_rollCurrentTime;
-        public bool _isBlocking = false;
+        private bool _isBlocking = false;
         private bool _rollingAvailiable = true;
         private PlayerInfo _playerInfo;
         
         
         //[SerializeField] private Collider2D enemyCollider;
         private Enemy _enemy;
-        private bool isDead;
+        private bool _isDead;
         [SerializeField] private GameObject endgameMenu;
 
 
@@ -68,6 +69,7 @@ namespace root
             _health = _playerInfo.Health;
             _mSpeed = _playerInfo.Speed;
             _mJumpForce = _playerInfo.JumpHeight;
+            _damage = _playerInfo.Damage;
         }
 
 
@@ -76,7 +78,7 @@ namespace root
         // Update is called once per frame
         void Update()
         {
-            if (!isDead)
+            if (!_isDead)
             {
                 // Increase timer that controls attack combo
                 m_timeSinceAttack += Time.deltaTime;
@@ -155,7 +157,7 @@ namespace root
                     {
                         foreach (var enemy in _hitColliderL1.enemies)
                         {
-                            enemy._health -= 5;
+                            enemy.TakeDamage(_damage);
                         }
                     }
                 
@@ -163,7 +165,7 @@ namespace root
                     {
                         foreach (var enemy in _hitColliderR1.enemies)
                         {
-                            enemy._health -= 5;
+                            enemy.TakeDamage(_damage);
                         }
                     }
                 }
@@ -244,13 +246,16 @@ namespace root
         public Vector3 GetCurrentPosition() => transform.position;
         public void TakeDamage(float damage)
         {
-            if (!isDead)
+            if (!_isDead)
             {
                 _health -= damage;
                 m_animator.SetTrigger("Hurt");
+                
+                m_body2d.velocity = transform.up * 2; // bounce ------------------
+                
                 if (_health <= 0)
                 {
-                    isDead = true;
+                    _isDead = true;
                     m_animator.ResetTrigger("Hurt");
                     m_animator.SetTrigger("Death");
                     endgameMenu.SetActive(true);
