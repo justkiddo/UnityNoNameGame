@@ -38,17 +38,21 @@ namespace root
         private bool _isBlocking = false;
         private bool _rollingAvailiable = true;
         private PlayerInfo _playerInfo;
+        private bool _immunity = false;
+        
         
         
         //[SerializeField] private Collider2D enemyCollider;
         private Enemy _enemy;
         private bool _isDead;
         [SerializeField] private GameObject endgameMenu;
+        private AudioSystem _audioSystem;
 
 
         [Inject]
-        private void Construct(PlayerInfo playerInfo, Enemy enemy)
+        private void Construct(PlayerInfo playerInfo, Enemy enemy, AudioSystem audioSystem)
         {
+            _audioSystem = audioSystem;
             _enemy = enemy;
             _playerInfo = playerInfo;
         }
@@ -136,8 +140,8 @@ namespace root
                 //Attack
                 if (Input.GetMouseButtonDown(0) && m_timeSinceAttack > 0.25f && !_isRolling)
                 {
+                    var hit = false;
                     m_currentAttack++;
-
                     // Loop back to one after third attack
                     if (m_currentAttack > 3)
                         m_currentAttack = 1;
@@ -158,17 +162,28 @@ namespace root
                         foreach (var enemy in _hitColliderL1.enemies)
                         {
                             enemy.TakeDamage(_damage);
+                            hit = true;
                         }
                     }
-                
-                    if (Input.GetMouseButtonDown(0) && GetComponent<SpriteRenderer>().flipX == false)
+                    else if (Input.GetMouseButtonDown(0) && GetComponent<SpriteRenderer>().flipX == false)
                     {
                         foreach (var enemy in _hitColliderR1.enemies)
                         {
                             enemy.TakeDamage(_damage);
+                            hit = true;
                         }
                     }
+
+                    if (hit)
+                    {
+                        _audioSystem.Attack();
+                    }
+                    else
+                    {
+                        _audioSystem.MissedAttack();
+                    }
                 }
+
             
             
             
@@ -177,6 +192,21 @@ namespace root
                 else if (Input.GetMouseButtonDown(1) && !_isRolling && _isGrounded)
                 {
                     _isBlocking = true;
+                    
+                    
+                    if (_hitColliderL1.enemies.Find(x=> x.CompareTag("Enemy")) && GetComponent<SpriteRenderer>().flipX)
+                    {
+                        _immunity = true;
+                    }
+                    else if (_hitColliderR1.enemies.Find(x=> x.CompareTag("Enemy"))&& GetComponent<SpriteRenderer>().flipX == false)
+                    {
+                        _immunity = true;
+                    }
+                    else
+                    {
+                        _immunity = false;
+                    }
+                    
                     _rollingAvailiable = false;
                     m_animator.SetTrigger("Block");
                     m_animator.SetBool("IdleBlock", true);
@@ -185,6 +215,7 @@ namespace root
                 else if (Input.GetMouseButtonUp(1))
                 {
                     _isBlocking = false;
+                    _immunity = false;
                     _rollingAvailiable = true;
                     m_animator.SetBool("IdleBlock", false);
                 }
@@ -224,29 +255,16 @@ namespace root
                         m_animator.SetInteger("AnimState", 0);
                 }
             
-                //   FrictionSetup();
             }
         }
 
 
-
-        private void FrictionSetup()
-        {
-            if (_isGrounded | _isBlocking)
-            {
-                playerMat.friction = 55;
-            }
-            else
-            {
-                playerMat.friction = 0;
-            }
-        }
 
 
         public Vector3 GetCurrentPosition() => transform.position;
         public void TakeDamage(float damage)
         {
-            if (!_isDead)
+            if (!_isDead && !_immunity) 
             {
                 _health -= damage;
                 m_animator.SetTrigger("Hurt");

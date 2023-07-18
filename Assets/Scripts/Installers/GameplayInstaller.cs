@@ -14,6 +14,7 @@ namespace root
         
         private IPlayer _playerPrefab;
         [SerializeField] private EndGamePanel endgamePanel;
+        [SerializeField] private AudioSystem audioSystem;
 
 
         public override void InstallBindings()
@@ -23,6 +24,7 @@ namespace root
             Container.Bind<Enemy>().FromInstance(enemy).AsSingle().NonLazy();
             Container.Bind<IPlayer>().FromInstance(playerPrefab);
             Container.BindInterfacesTo<EndGamePanel>().FromInstance(endgamePanel).AsSingle().NonLazy();
+            Container.Bind<AudioSystem>().FromInstance(audioSystem).AsSingle().NonLazy();
             foreach (var pCollider in playerHitColliders)
             {
                 Container.Bind<PlayerHitCollider>().FromInstance(pCollider);
