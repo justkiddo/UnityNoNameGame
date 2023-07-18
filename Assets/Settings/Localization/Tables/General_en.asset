@@ -22,12 +22,55 @@ MonoBehaviour:
     m_Localized: Start
     m_Metadata:
       m_Items: []
-  - m_Id: 160934129664
+  - m_Id: 252856496128
+    m_Localized: Quit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3686051418468352
+    m_Localized: Restart
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3686133777821696
+    m_Localized: Main menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3686247804170240
+    m_Localized: Quit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9778775225790464
+    m_Localized: 'Controls:
+
+      WASD - Movement
+
+      Space - Jump
+
+      Left
+      Shit - Roll
+
+      Left Click - Attack
+
+      Right Click - Block'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9781506543972352
+    m_Localized: Main Menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9781530594111488
+    m_Localized: Controls
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9789075282980864
     m_Localized: Settings
     m_Metadata:
       m_Items: []
-  - m_Id: 252856496128
-    m_Localized: Quit
+  - m_Id: 9789599189299200
+    m_Localized: Russian
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9789603069030400
+    m_Localized: English
     m_Metadata:
       m_Items: []
   references:

@@ -19,12 +19,44 @@ MonoBehaviour:
     m_Key: start.button
     m_Metadata:
       m_Items: []
-  - m_Id: 160934129664
-    m_Key: settings.button
-    m_Metadata:
-      m_Items: []
   - m_Id: 252856496128
     m_Key: quit.button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3686051418468352
+    m_Key: endgame.restart
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3686133777821696
+    m_Key: endgame.main.menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3686247804170240
+    m_Key: endgame.quit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9778775225790464
+    m_Key: settings.controls
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9781506543972352
+    m_Key: tab.menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9781530594111488
+    m_Key: tab.controls
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9789075282980864
+    m_Key: tab.settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9789599189299200
+    m_Key: settings.locales.ru
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9789603069030400
+    m_Key: settings.locales.en
     m_Metadata:
       m_Items: []
   m_Metadata:
