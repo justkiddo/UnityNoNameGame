@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 namespace root
@@ -7,25 +8,26 @@ namespace root
     {
         private static readonly int Grounded = Animator.StringToHash("Grounded");
         private static readonly int AirSpeedY = Animator.StringToHash("AirSpeedY");
-        
+        private static readonly int AnimState = Animator.StringToHash("AnimState");
+        private static readonly int Jump = Animator.StringToHash("Jump");
+        private static readonly int Roll = Animator.StringToHash("Roll");
+        private static readonly int Block = Animator.StringToHash("Block");
+        private static readonly int IdleBlock = Animator.StringToHash("IdleBlock");
+        private static readonly int Hurt = Animator.StringToHash("Hurt");
+        private static readonly int Death = Animator.StringToHash("Death");
         
         [SerializeField] float rollForce = 6.0f;
         [SerializeField] private PhysicsMaterial2D playerMat;
         [SerializeField] private GameObject endgameMenu;
+        [SerializeField] private Button attackButton;
         
         private PlayerInfo _playerInfo;
         private AudioSystem _audioSystem;
         private Enemy _enemy;
         private SpriteRenderer _spriteRenderer;
-        private float _mSpeed = 4.0f;
-        private float _mJumpForce = 7.5f;
-        private float _health;
-        private float _damage;
-        
         private PlayerHitCollider _hitColliderL1;
         private PlayerHitCollider _hitColliderR1;
-       
-        
+        public VariableJoystick variableJoystick;
         private Animator _animator;
         private Rigidbody2D _body2d;
         private PlayerSensor _mGroundPlayerSensor;
@@ -44,14 +46,10 @@ namespace root
         private bool _isDead;
         private bool _immunity;
         private string _attackTrigger;
-        
-        // private PlayerSensor _mWallPlayerSensorR1;
-        // private PlayerSensor _mWallPlayerSensorR2;
-        // private PlayerSensor _mWallPlayerSensorL1;
-        // private PlayerSensor _mWallPlayerSensorL2;
-
-
-
+        private float _mSpeed = 4.0f;
+        private float _mJumpForce = 7.5f;
+        private float _health;
+        private float _damage;
 
         [Inject]
         private void Construct(PlayerInfo playerInfo, Enemy enemy, AudioSystem audioSystem)
@@ -73,11 +71,7 @@ namespace root
             _mSpeed = _playerInfo.Speed;
             _mJumpForce = _playerInfo.JumpHeight;
             _damage = _playerInfo.Damage;
-            
-            // _mWallPlayerSensorR1 = transform.Find("WallSensor_R1").GetComponent<PlayerSensor>();
-            // _mWallPlayerSensorR2 = transform.Find("WallSensor_R2").GetComponent<PlayerSensor>();
-            // _mWallPlayerSensorL1 = transform.Find("WallSensor_L1").GetComponent<PlayerSensor>();
-            // _mWallPlayerSensorL2 = transform.Find("WallSensor_L2").GetComponent<PlayerSensor>();
+            attackButton.onClick.AddListener(Attack);
         }
 
 
@@ -106,16 +100,14 @@ namespace root
                     _isGrounded = false;
                     _animator.SetBool(Grounded, _isGrounded);
                 }
-                
-                float inputX = Input.GetAxis("Horizontal");
-                
-                if (inputX > 0)
+
+                if (variableJoystick.Horizontal > 0)
                 {
                     _spriteRenderer.flipX = false;
                     _facingDirection = 1;
                 }
 
-                else if (inputX < 0)
+                else if (variableJoystick.Horizontal < 0)
                 {
                     _spriteRenderer.flipX = true;
                     _facingDirection = -1;
@@ -123,48 +115,46 @@ namespace root
 
                 if (!_isRolling && !_isBlocking)
                 {
-                    _body2d.velocity = new Vector2(inputX * _mSpeed, _body2d.velocity.y);
+                    _body2d.velocity = new Vector2(variableJoystick.Horizontal * _mSpeed, _body2d.velocity.y);
                 }
 
                 _animator.SetFloat(AirSpeedY, _body2d.velocity.y);
 
-
-
-                if (Input.GetMouseButtonDown(0) && _timeSinceAttack > 0.25f && !_isRolling)
-                {
-                    var hit = false;
-                    _currentAttack++;
-                    if (_currentAttack > 3)
-                        _currentAttack = 1;
-
-                    if (_timeSinceAttack > 1.0f)
-                        _currentAttack = 1;
-
-                    _attackTrigger = "Attack";
-                    _animator.SetTrigger(_attackTrigger + _currentAttack);
-
-                    _timeSinceAttack = 0.0f;
-
-                    hit = PlayerAttack(hit);
-
-                    if (hit)
-                    {
-                        _audioSystem.Attack();
-                    }
-                    else
-                    {
-                        _audioSystem.MissedAttack();
-                    }
-                }
-
-            
-            
-            
-
-                PlayerBlock();
+                
                 PlayerRoll();
                 PlayerJump();
-                PlayerRun(inputX);
+                PlayerBlock();
+                PlayerRun(variableJoystick.Horizontal);
+            }
+        }
+
+        private void Attack()
+        {
+            if (_timeSinceAttack > 0.25f && !_isRolling)
+            {
+                var hit = false;
+                _currentAttack++;
+                if (_currentAttack > 3)
+                    _currentAttack = 1;
+
+                if (_timeSinceAttack > 1.0f)
+                    _currentAttack = 1;
+
+                _attackTrigger = "Attack";
+                _animator.SetTrigger(_attackTrigger + _currentAttack);
+
+                _timeSinceAttack = 0.0f;
+
+                hit = PlayerAttack(hit);
+
+                if (hit)
+                {
+                    _audioSystem.Attack();
+                }
+                else
+                {
+                    _audioSystem.MissedAttack();
+                }
             }
         }
 
@@ -173,42 +163,43 @@ namespace root
             if (Mathf.Abs(inputX) > Mathf.Epsilon)
             {
                 _delayToIdle = 0.05f;
-                _animator.SetInteger("AnimState", 1);
+                _animator.SetInteger(AnimState, 1);
             }
 
             else
             {
                 _delayToIdle -= Time.deltaTime;
                 if (_delayToIdle < 0)
-                    _animator.SetInteger("AnimState", 0);
+                    _animator.SetInteger(AnimState, 0);
             }
         }
 
         private void PlayerJump()
         {
-            if (Input.GetKeyDown("space") && _isGrounded && !_isRolling)
+            if (variableJoystick.Vertical > 0 && _isGrounded && !_isRolling)
             {
-                _animator.SetTrigger("Jump");
+                _animator.SetTrigger(Jump);
                 _isGrounded = false;
-                _animator.SetBool("Grounded", _isGrounded);
+                _animator.SetBool(Grounded, _isGrounded);
                 _body2d.velocity = new Vector2(_body2d.velocity.x, _mJumpForce);
                 _mGroundPlayerSensor.Disable(0.2f);
             }
         }
 
+        // REWORK__________________________________________________________
         private void PlayerRoll()
         {
             if (Input.GetKeyDown("left shift") && !_isRolling && !_isWallSliding && _rollingAvailable)
             {
                 _isRolling = true;
-                _animator.SetTrigger("Roll");
+                _animator.SetTrigger(Roll);
                 _body2d.velocity = new Vector2(_facingDirection * rollForce, _body2d.velocity.y);
             }
         }
 
         private void PlayerBlock()
         {
-            if (Input.GetMouseButtonDown(1) && !_isRolling && _isGrounded)
+            if (PlayerBlockEvent.ButtonPressed && !_isRolling && _isGrounded)
             {
                 _isBlocking = true;
 
@@ -228,22 +219,21 @@ namespace root
                 }
 
                 _rollingAvailable = false;
-                _animator.SetTrigger("Block");
-                _animator.SetBool("IdleBlock", true);
+                _animator.SetTrigger(Block);
+                _animator.SetBool(IdleBlock, true);
             }
-
-            else if (Input.GetMouseButtonUp(1))
+            else if (!PlayerBlockEvent.ButtonPressed)
             {
                 _isBlocking = false;
                 _immunity = false;
                 _rollingAvailable = true;
-                _animator.SetBool("IdleBlock", false);
+                _animator.SetBool(IdleBlock, false);
             }
         }
 
         private bool PlayerAttack(bool hit)
         {
-            if (Input.GetMouseButtonDown(0) && _spriteRenderer.flipX)
+            if ( _spriteRenderer.flipX)
             {
                 foreach (var enemy in _hitColliderL1.enemies)
                 {
@@ -251,7 +241,7 @@ namespace root
                     hit = true;
                 }
             }
-            else if (Input.GetMouseButtonDown(0) && _spriteRenderer.flipX == false)
+            else if ( _spriteRenderer.flipX == false)
             {
                 foreach (var enemy in _hitColliderR1.enemies)
                 {
@@ -270,15 +260,15 @@ namespace root
             if (!_isDead && !_immunity) 
             {
                 _health -= damage;
-                _animator.SetTrigger("Hurt");
+                _animator.SetTrigger(Hurt);
                 
                 _body2d.velocity = transform.up * 2; 
                 
                 if (_health <= 0)
                 {
                     _isDead = true;
-                    _animator.ResetTrigger("Hurt");
-                    _animator.SetTrigger("Death");
+                    _animator.ResetTrigger(Hurt);
+                    _animator.SetTrigger(Death);
                     endgameMenu.SetActive(true);
                 }
             }
