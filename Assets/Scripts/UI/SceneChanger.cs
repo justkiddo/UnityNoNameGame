@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class SceneChanger : MonoBehaviour
 {
     [SerializeField] private Button startButton;
-    [SerializeField] private Button settingsButton;
     [SerializeField] private Button backButton;
     [SerializeField] private Button quitButton;
     [SerializeField] private Button restartButton;
@@ -17,7 +16,6 @@ public class SceneChanger : MonoBehaviour
     private void Awake()
     {
         startButton?.onClick.AddListener(OnStartButtonsClick);
-        settingsButton?.onClick.AddListener(OnSettingsButtonsClick);
         quitButton?.onClick.AddListener(OnQuitButtonsClick);
         backButton?.onClick.AddListener(OnBackButtonClick);
         restartButton?.onClick.AddListener(OnRestartButtonClick);
@@ -47,17 +45,6 @@ public class SceneChanger : MonoBehaviour
             StartCoroutine(ClickAwait());
             Application.Quit();
             _clickBlocker = false;
-        }
-    }
-
-    private void OnSettingsButtonsClick()
-    {
-        if (_clickBlocker == false)
-        {
-            _clickBlocker = true;
-            StartCoroutine(ClickAwait());
-        SceneManager.LoadScene("Scenes/SettingsScene");
-        _clickBlocker = false;
         }
     }
 

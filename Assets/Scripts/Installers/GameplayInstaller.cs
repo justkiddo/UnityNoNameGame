@@ -11,14 +11,14 @@ namespace root
         [SerializeField] private Enemy enemy;
         [SerializeField] private Player playerPrefab;
         [SerializeField] private List<PlayerHitCollider> playerHitColliders;
-        
-        private IPlayer _playerPrefab;
         [SerializeField] private EndGamePanel endgamePanel;
         [SerializeField] private AudioSystem audioSystem;
-
+        private IPlayer _playerPrefab;
+        [SerializeField] private EnemyBoss boss;
 
         public override void InstallBindings()
         {
+            Container.Bind<EnemyBoss>().FromInstance(boss).AsSingle().NonLazy();
             Container.Bind<IUnityLocalization>().To<UnityLocalization>().AsSingle().NonLazy();
             Container.Bind<PlayerInfo>().FromInstance(playerInfo);
             Container.Bind<Enemy>().FromInstance(enemy).AsSingle().NonLazy();

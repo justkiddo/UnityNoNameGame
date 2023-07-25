@@ -1,6 +1,5 @@
 using root;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Zenject;
 
 public class RootInstaller : MonoInstaller

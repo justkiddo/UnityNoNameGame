@@ -178,8 +178,8 @@ namespace root
                 _animator.SetTrigger("Hurt");
                 _tempHealth = _health;
                 
-                Vector3 dir = (_player.GetCurrentPosition() - transform.position);//bounce ----------------------
-                rb.velocity = -dir * 2;//bounce ----------------------
+                Vector3 dir = (_player.GetCurrentPosition() - transform.position);
+                rb.velocity = -dir * 2;
                 
                 
                 StartCoroutine(ResetTriggerHurt());

@@ -1,4 +1,3 @@
-using UnityEngine.Localization.Settings;
 using Zenject;
 
 namespace root

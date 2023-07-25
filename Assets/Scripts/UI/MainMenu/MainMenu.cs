@@ -1,12 +1,7 @@
-using System;
 using UniRx;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using Zenject;
 using TMPro;
-using UnityEngine.Localization;
-using UnityEngine.Localization.Settings;
 
 namespace root
 {
