@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 2204983339820788588}
   - component: {fileID: 8281654927318573493}
   - component: {fileID: 2968628982941031861}
-  - component: {fileID: -8664500294939003486}
+  - component: {fileID: 414550963337920177}
+  - component: {fileID: -2092574872955792799}
   m_Layer: 0
   m_Name: Fireball
   m_TagString: Untagged
@@ -98,7 +99,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed00bfd052917ee4c862ecf35c25bcad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!50 &-8664500294939003486
+--- !u!58 &414550963337920177
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3095369344169982031}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
+--- !u!50 &-2092574872955792799
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0

@@ -11,42 +11,42 @@ public class EnemyBoss : MonoBehaviour
     [SerializeField] private List<Transform> points;
     [SerializeField] private GameObject fireballPrefab;
     [SerializeField] private Transform shootPoint;
+    [SerializeField] private BossTrigger _bossTrigger;
+
     private Vector3 _playerPos;
     private bool ftp = true;
     private float _startTime;
     private IPlayer _player;
-    private float _speed = 6f;
-
+    private float _speed = 2f;
+    public bool startFight = false;
+    
 
     [Inject]
     private void Construct(IPlayer player)
     {
         _player = player;
     }
-    
+
     private void Awake()
     {
         _startTime = Time.time;
-        
     }
 
-
-
     private void Update()
-    { 
-        _playerPos = _player.GetCurrentPosition();
-       Teleport();
+    {
+        if (startFight)
+        {
+            Teleport();
+        }
     }
 
 
     private void Shoot()
     {
+        var direction = _player.GetCurrentPosition() - transform.position;
         var bullet = Instantiate(fireballPrefab, shootPoint.position, Quaternion.identity);
-        
-         var rb = bullet.GetComponent<Rigidbody2D>();
-         rb.velocity = new Vector2(_playerPos.x,_playerPos.y) * (Time.deltaTime * _speed);
-
-        //bullet.transform.position = Vector3.MoveTowards(shootPoint.position, direction, Time.deltaTime);
+        var rb = bullet.GetComponent<Rigidbody2D>();
+        rb.velocity = new Vector3(direction.x,direction.y, direction.z) * _speed;
     }
     
 
@@ -58,7 +58,7 @@ public class EnemyBoss : MonoBehaviour
             Random r = new Random();
             var n = r.Next(0, points.Capacity);
             transform.position = points[n].position;
-            
+            Shoot();
             ftp = false;
         }
         else

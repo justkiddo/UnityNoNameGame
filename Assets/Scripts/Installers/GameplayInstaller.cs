@@ -15,10 +15,12 @@ namespace root
         [SerializeField] private AudioSystem audioSystem;
         private IPlayer _playerPrefab;
         [SerializeField] private EnemyBoss boss;
+        [SerializeField] private BossTrigger bossTrigger;
+        
 
         public override void InstallBindings()
         {
-           
+            Container.Bind<BossTrigger>().FromInstance(bossTrigger).AsSingle().NonLazy();
             Container.Bind<EnemyBoss>().FromInstance(boss).AsSingle().NonLazy();
             Container.Bind<IUnityLocalization>().To<UnityLocalization>().AsSingle().NonLazy();
             Container.Bind<PlayerInfo>().FromInstance(playerInfo);

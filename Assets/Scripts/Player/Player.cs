@@ -20,6 +20,10 @@ namespace root
         [SerializeField] private PhysicsMaterial2D playerMat;
         [SerializeField] private GameObject endgameMenu;
         [SerializeField] private Button attackButton;
+        [SerializeField] private CheckpointSystem checkpointSystem;
+        
+        [Range(0,2)]
+        [SerializeField] private int checkpointNo = 0;
         
         private PlayerInfo _playerInfo;
         private AudioSystem _audioSystem;
@@ -72,6 +76,8 @@ namespace root
             _mJumpForce = _playerInfo.JumpHeight;
             _damage = _playerInfo.Damage;
             attackButton.onClick.AddListener(Attack);
+
+            checkpointSystem.SetCheckpoint(gameObject, checkpointNo);
         }
 
 
