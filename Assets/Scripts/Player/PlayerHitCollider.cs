@@ -8,7 +8,10 @@ namespace root
     {
         private PlayerInfo _playerInfo;
         public List<Enemy> enemies;
-
+        public List<EnemyBoss> enemyBosses;
+        public bool enemy;
+        public bool boss;
+        
         [Inject]
         private void Construct( PlayerInfo playerInfo)
         {
@@ -19,7 +22,13 @@ namespace root
         {
             if (col.CompareTag("Enemy"))
             {
+                enemy = true;
                 enemies.Add(col.GetComponent<Enemy>());
+            }
+            else if (col.CompareTag("EnemyBoss"))
+            {
+                boss = true;
+                enemyBosses.Add(col.GetComponent<EnemyBoss>());
             }
         }
 
@@ -27,7 +36,13 @@ namespace root
         {
             if (other.CompareTag("Enemy"))
             {
+                enemy = false;
                 enemies.Remove(other.GetComponent<Enemy>());
+            }
+            else if (other.CompareTag("EnemyBoss"))
+            {
+                boss = false;
+                enemyBosses.Remove(other.GetComponent<EnemyBoss>());
             }
         }
     }

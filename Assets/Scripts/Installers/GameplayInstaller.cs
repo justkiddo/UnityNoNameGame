@@ -6,17 +6,18 @@ namespace root
 {
     public class GameplayInstaller : MonoInstaller
     {
-        [SerializeField] private PlayerInfo playerInfo;
+
         [SerializeField] private List<EnemyInfo> enemyInfos;
+        [SerializeField] private List<PlayerHitCollider> playerHitColliders;
+        [SerializeField] private List<BossInfo> _bossInfos;
         [SerializeField] private Enemy enemy;
         [SerializeField] private Player playerPrefab;
-        [SerializeField] private List<PlayerHitCollider> playerHitColliders;
+        [SerializeField] private PlayerInfo playerInfo;
         [SerializeField] private EndGamePanel endgamePanel;
         [SerializeField] private AudioSystem audioSystem;
-        private IPlayer _playerPrefab;
         [SerializeField] private EnemyBoss boss;
         [SerializeField] private BossTrigger bossTrigger;
-        
+        private IPlayer _playerPrefab;
 
         public override void InstallBindings()
         {
@@ -28,14 +29,20 @@ namespace root
             Container.Bind<IPlayer>().FromInstance(playerPrefab);
             Container.BindInterfacesTo<EndGamePanel>().FromInstance(endgamePanel).AsSingle().NonLazy();
             Container.Bind<AudioSystem>().FromInstance(audioSystem).AsSingle().NonLazy();
-            foreach (var pCollider in playerHitColliders)
+            
+            foreach (var playerHitCollider in playerHitColliders)
             {
-                Container.Bind<PlayerHitCollider>().FromInstance(pCollider);
+                Container.Bind<PlayerHitCollider>().FromInstance(playerHitCollider);
             }
             foreach (var enemyInfo in enemyInfos)
             {
                 Container.Bind<EnemyInfo>().FromInstance(enemyInfo);
             }
+            foreach (var bossInfo in _bossInfos)
+            {
+                Container.Bind<BossInfo>().FromInstance(bossInfo);
+            }
+            
         }
     }
 }

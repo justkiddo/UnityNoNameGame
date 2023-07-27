@@ -241,21 +241,45 @@ namespace root
         {
             if ( _spriteRenderer.flipX)
             {
-                foreach (var enemy in _hitColliderL1.enemies)
-                {
-                    enemy.TakeDamage(_damage);
-                    hit = true;
-                }
+
+                    foreach (var enemy in _hitColliderL1.enemies)
+                    {
+                        if (_hitColliderL1.enemy)
+                        {
+                            enemy.TakeDamage(_damage);
+                            hit = true;
+                        }
+                    }
+                    foreach (var boss in _hitColliderL1.enemyBosses)
+                    {
+                        if (_hitColliderL1.boss)
+                        {
+                            boss.TakeDamage(_damage);
+                            hit = true;
+                        }
+                    }
+                
             }
             else if ( _spriteRenderer.flipX == false)
             {
                 foreach (var enemy in _hitColliderR1.enemies)
                 {
-                    enemy.TakeDamage(_damage);
-                    hit = true;
+                    if (_hitColliderR1.enemy)
+                    {
+                        enemy.TakeDamage(_damage);
+                        hit = true;
+                    }
+                }
+                
+                foreach (var boss in _hitColliderR1.enemyBosses)
+                {
+                    if (_hitColliderR1.boss)
+                    {
+                        boss.TakeDamage(_damage);
+                        hit = true;
+                    }
                 }
             }
-
             return hit;
         }
         

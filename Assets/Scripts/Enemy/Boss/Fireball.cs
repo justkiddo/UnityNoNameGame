@@ -1,19 +1,33 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
-public class Fireball : MonoBehaviour
+namespace root
 {
-    private void Awake()
+    public class Fireball : MonoBehaviour
     {
-        StartCoroutine(DestroyFireball());
-    }
+        public bool hit;
+
+        private void Awake()
+        {
+            hit = false;
+            StartCoroutine(DestroyFireball());
+        }
+
+    
+        private void OnCollisionEnter2D(Collision2D col)
+        {
+            if (col.gameObject.CompareTag("Player"))
+            {
+                hit = true;
+            }
+        }
 
 
-    private IEnumerator DestroyFireball()
-    {
-        yield return new WaitForSeconds(6);
-        Destroy(this.gameObject);
+        private IEnumerator DestroyFireball()
+        {
+            yield return new WaitForSeconds(3);
+            Destroy(this.gameObject);
+        }
     }
 }

@@ -30,6 +30,7 @@ namespace root
             if (other.CompareTag("Player"))
             {
                 bossWalls.SetActive(false);
+                _enemyBoss.startFight = false;
             }
         }
     }
