@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
@@ -35,6 +36,7 @@ namespace root
         private Animator _animator;
         private Rigidbody2D _body2d;
         private PlayerSensor _mGroundPlayerSensor;
+        private BossInfo _bossInfo;
         
         private readonly bool _isWallSliding = false;
         private bool _isGrounded;
@@ -54,10 +56,12 @@ namespace root
         private float _mJumpForce = 7.5f;
         private float _health;
         private float _damage;
+        
 
         [Inject]
-        private void Construct(PlayerInfo playerInfo, Enemy enemy, AudioSystem audioSystem)
+        private void Construct(PlayerInfo playerInfo, Enemy enemy, AudioSystem audioSystem, BossInfo bossInfo)
         {
+            _bossInfo = bossInfo;
             _audioSystem = audioSystem;
             _enemy = enemy;
             _playerInfo = playerInfo;
@@ -301,6 +305,14 @@ namespace root
                     _animator.SetTrigger(Death);
                     endgameMenu.SetActive(true);
                 }
+            }
+        }
+
+        private void OnCollisionEnter2D(Collision2D col)
+        {
+            if (col.gameObject.CompareTag("Fireball"))
+            {
+                TakeDamage(_bossInfo.damage);
             }
         }
 
