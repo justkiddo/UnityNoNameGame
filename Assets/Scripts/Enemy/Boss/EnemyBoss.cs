@@ -165,18 +165,13 @@ public class EnemyBoss : MonoBehaviour, IEnemy
             var bullet = Instantiate(fireballPrefab, shootPointLeft.position, Quaternion.identity);
             var rb = bullet.GetComponent<Rigidbody2D>();
             rb.velocity = new Vector3(direction.x,direction.y, direction.z) * _fireballSpeed;
-            var hit = bullet.GetComponent<Fireball>();
-   
         }
         else if(!_spriteRenderer.flipX)
         {
             var bullet = Instantiate(fireballPrefab, shootPointRight.position, Quaternion.identity);
             var rb = bullet.GetComponent<Rigidbody2D>();
-            rb.velocity = new Vector3(direction.x,direction.y, direction.z) * _fireballSpeed; 
-            var hit = bullet.GetComponent<Fireball>();
- 
+            rb.velocity = new Vector3(direction.x,direction.y, direction.z) * _fireballSpeed;
         }
-        
     }
 
     public void TakeDamage(float damage)
