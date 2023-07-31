@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Zenject;
 
@@ -6,7 +7,6 @@ namespace root
     public class BossTrigger : MonoBehaviour
     {
         [SerializeField] private GameObject bossWalls;
-        private Player _player;
         private EnemyBoss _enemyBoss;
 
 
@@ -15,7 +15,21 @@ namespace root
         {
             _enemyBoss = enemyBoss;
         }
-    
+
+        private void Update()
+        {
+            DestroyWalls();
+        }
+
+        private void DestroyWalls()
+        {
+            if (_enemyBoss.isDead)
+            {
+                bossWalls.SetActive(false);
+            }
+        }
+
+
         private void OnTriggerEnter2D(Collider2D col)
         {
             if (col.CompareTag("Player"))
@@ -25,13 +39,6 @@ namespace root
             }    
         }
 
-        private void OnTriggerExit2D(Collider2D other)
-        {
-            if (other.CompareTag("Player"))
-            {
-                bossWalls.SetActive(false);
-                _enemyBoss.startFight = false;
-            }
-        }
+
     }
 }

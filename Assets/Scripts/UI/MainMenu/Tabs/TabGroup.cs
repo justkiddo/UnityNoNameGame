@@ -5,9 +5,9 @@ namespace root
 {
     public class TabGroup : MonoBehaviour
     {
-        private List<TabButton> _tabButtonsList;
-        private TabButton _selectedTab;
-        private List<GameObject> _gameObjectsToSwap;
+        public List<TabButton> tabButtonsList;
+        public TabButton selectedTab;
+        public List<GameObject> gameObjectsToSwap;
 
         private void Update()
         {
@@ -16,17 +16,17 @@ namespace root
 
         public void Subscribe(TabButton button)
         {
-            if (_tabButtonsList == null)
+            if (tabButtonsList == null)
             {
-                _tabButtonsList = new List<TabButton>();
+                tabButtonsList = new List<TabButton>();
             }
-            _tabButtonsList.Add(button);
+            tabButtonsList.Add(button);
         }
 
         public void OnTabEnter(TabButton button)
         {
             ResetTabs();
-            if (_selectedTab == null || button != _selectedTab)
+            if (selectedTab == null || button != selectedTab)
             {
                 button.background.color = Color.white;
             }
@@ -40,17 +40,17 @@ namespace root
         public void OnTabSelected(TabButton button)
         {
             ResetTabs();
-            _selectedTab = button;
+            selectedTab = button;
             int index = button.transform.GetSiblingIndex();
-            for (int i = 0; i< _gameObjectsToSwap.Count; i++)
+            for (int i = 0; i< gameObjectsToSwap.Count; i++)
             {
                 if (i == index)
                 {
-                    _gameObjectsToSwap[i].SetActive(true);
+                    gameObjectsToSwap[i].SetActive(true);
                 }
                 else
                 {
-                    _gameObjectsToSwap[i].SetActive(false);
+                    gameObjectsToSwap[i].SetActive(false);
                 }
             }
         
@@ -59,9 +59,9 @@ namespace root
 
         public void ResetTabs()
         {
-            foreach (TabButton button in _tabButtonsList)
+            foreach (TabButton button in tabButtonsList)
             {
-                if (_selectedTab != null && button == _selectedTab)
+                if (selectedTab != null && button == selectedTab)
                 {
                     continue;
                 }

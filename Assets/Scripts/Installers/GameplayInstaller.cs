@@ -17,7 +17,7 @@ namespace root
         [SerializeField] private AudioSystem audioSystem;
         [SerializeField] private EnemyBoss boss;
         [SerializeField] private BossTrigger bossTrigger;
-        private IPlayer _playerPrefab;
+        [SerializeField] private PauseMenu pauseMenu;
 
         public override void InstallBindings()
         {
@@ -29,7 +29,7 @@ namespace root
             Container.Bind<IPlayer>().FromInstance(playerPrefab);
             Container.BindInterfacesTo<EndGamePanel>().FromInstance(endgamePanel).AsSingle().NonLazy();
             Container.Bind<AudioSystem>().FromInstance(audioSystem).AsSingle().NonLazy();
-            
+            Container.Bind<PauseMenu>().FromInstance(pauseMenu).AsSingle().NonLazy();
             foreach (var playerHitCollider in playerHitColliders)
             {
                 Container.Bind<PlayerHitCollider>().FromInstance(playerHitCollider);

@@ -18,7 +18,6 @@ namespace root
         private static readonly int Death = Animator.StringToHash("Death");
         
         [SerializeField] float rollForce = 6.0f;
-        [SerializeField] private PhysicsMaterial2D playerMat;
         [SerializeField] private GameObject endgameMenu;
         [SerializeField] private Button attackButton;
         [SerializeField] private CheckpointSystem checkpointSystem;
@@ -140,47 +139,53 @@ namespace root
 
         private void Attack()
         {
-            if (_timeSinceAttack > 0.25f && !_isRolling)
+            if (!_isDead)
             {
-                var hit = false;
-                _currentAttack++;
-                if (_currentAttack > 3)
-                    _currentAttack = 1;
-
-                if (_timeSinceAttack > 1.0f)
-                    _currentAttack = 1;
-
-                _attackTrigger = "Attack";
-                _animator.SetTrigger(_attackTrigger + _currentAttack);
-
-                _timeSinceAttack = 0.0f;
-
-                hit = PlayerAttack(hit);
-
-                if (hit)
+                if (_timeSinceAttack > 0.25f && !_isRolling)
                 {
-                    _audioSystem.Attack();
-                }
-                else
-                {
-                    _audioSystem.MissedAttack();
+                    var hit = false;
+                    _currentAttack++;
+                    if (_currentAttack > 3)
+                        _currentAttack = 1;
+
+                    if (_timeSinceAttack > 1.0f)
+                        _currentAttack = 1;
+
+                    _attackTrigger = "Attack";
+                    _animator.SetTrigger(_attackTrigger + _currentAttack);
+
+                    _timeSinceAttack = 0.0f;
+
+                    hit = PlayerAttack(hit);
+
+                    if (hit)
+                    {
+                        _audioSystem.Attack();
+                    }
+                    else
+                    {
+                        _audioSystem.MissedAttack();
+                    }
                 }
             }
         }
 
         private void PlayerRun(float inputX)
         {
-            if (Mathf.Abs(inputX) > Mathf.Epsilon)
+            if (!_isDead)
             {
-                _delayToIdle = 0.05f;
-                _animator.SetInteger(AnimState, 1);
-            }
+                if (Mathf.Abs(inputX) > Mathf.Epsilon)
+                {
+                    _delayToIdle = 0.05f;
+                    _animator.SetInteger(AnimState, 1);
+                }
 
-            else
-            {
-                _delayToIdle -= Time.deltaTime;
-                if (_delayToIdle < 0)
-                    _animator.SetInteger(AnimState, 0);
+                else
+                {
+                    _delayToIdle -= Time.deltaTime;
+                    if (_delayToIdle < 0)
+                        _animator.SetInteger(AnimState, 0);
+                }
             }
         }
 
@@ -209,7 +214,7 @@ namespace root
 
         private void PlayerBlock()
         {
-            if (PlayerBlockEvent.ButtonPressed && !_isRolling && _isGrounded)
+            if (PlayerBlockEvent.ButtonPressed && !_isRolling && _isGrounded && !_isDead)
             {
                 _isBlocking = true;
 
@@ -317,5 +322,6 @@ namespace root
         }
 
         public float GetHealth() => _health;
+        public bool IsDead() => _isDead;
     }
 }

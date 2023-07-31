@@ -10,6 +10,8 @@ namespace root
         [SerializeField] private bool follow;
         [SerializeField]private EnemyHitCollider enemyHitColliderL1;
         [SerializeField]private EnemyHitCollider enemyHitColliderR1;
+        [SerializeField]private SpriteRenderer deadEnemy;
+        
         private float _health;
         private float _speed;
         private float _damage;
@@ -167,6 +169,16 @@ namespace root
         private IEnumerator DestroyEnemy()
         {
             yield return new WaitForSeconds(1);
+            if (_spriteRenderer.flipX)
+            {
+                var sprite = Instantiate(deadEnemy, transform.position, Quaternion.identity);
+                sprite.flipX = true;
+            }
+            else
+            {
+                var sprite = Instantiate(deadEnemy, transform.position, Quaternion.identity);
+                sprite.flipX = false;
+            }
             Destroy(this.gameObject);
         }
 

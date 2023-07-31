@@ -7,7 +7,7 @@ namespace root
     [RequireComponent(typeof(Image))]
     public class TabButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler
     {
-        private TabGroup _tabGroup;
+        public TabGroup _tabGroup;
         public Image background;
 
 

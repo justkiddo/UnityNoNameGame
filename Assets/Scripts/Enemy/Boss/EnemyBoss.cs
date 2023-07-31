@@ -29,8 +29,7 @@ public class EnemyBoss : MonoBehaviour, IEnemy
     private float _fireballSpeed;
     private float _tempHealth;
     private bool _damageTaken;
-    private bool _attacking;
-    private bool _isDead;
+    public bool isDead;
     
     [Inject]
     private void Construct(IPlayer player, BossInfo bossInfo)
@@ -56,7 +55,7 @@ public class EnemyBoss : MonoBehaviour, IEnemy
         {
             DamageCheck();
             DeathCheck();
-            if (!_isDead)
+            if (!isDead)
             {
                 Teleport();
                 FlipCheck();
@@ -86,7 +85,7 @@ public class EnemyBoss : MonoBehaviour, IEnemy
     {
         if (_health <= 0)
         {
-            _isDead = true;
+            isDead = true;
             _animator.SetTrigger("Death");
             StopCoroutine(ResetTriggerAttack());
             StartCoroutine(DeathAwait());
@@ -114,13 +113,10 @@ public class EnemyBoss : MonoBehaviour, IEnemy
         if (_damageTaken)
         {
             _damageTaken = false;
-            _attacking = false;
             yield break;
                 
         }
         yield return new WaitForSeconds(0.6f);
-            
-        _attacking = false;
     }
 
     private void FlipCheck()
@@ -158,7 +154,6 @@ public class EnemyBoss : MonoBehaviour, IEnemy
     
     private void Shoot()
     {
-        _attacking = true;
         var direction = _player.GetCurrentPosition() - transform.position;
         if (_spriteRenderer.flipX)
         {

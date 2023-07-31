@@ -59,6 +59,10 @@ MonoBehaviour:
     m_Key: settings.locales.en
     m_Metadata:
       m_Items: []
+  - m_Id: 14545678305587200
+    m_Key: pause.continue
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

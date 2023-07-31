@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Health>k__BackingField: 100
   <Speed>k__BackingField: 5
-  <JumpHeight>k__BackingField: 7.5
+  <JumpHeight>k__BackingField: 11
   <Damage>k__BackingField: 15
