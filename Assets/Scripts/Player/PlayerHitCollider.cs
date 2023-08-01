@@ -1,22 +1,16 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Zenject;
 
 namespace root
 {
     public class PlayerHitCollider : MonoBehaviour
     {
-        private PlayerInfo _playerInfo;
         public List<Enemy> enemies;
         public List<EnemyBoss> enemyBosses;
         public bool enemy;
         public bool boss;
         
-        [Inject]
-        private void Construct( PlayerInfo playerInfo)
-        {
-            _playerInfo = playerInfo;
-        }
+
 
         private void OnTriggerEnter2D(Collider2D col)
         {

@@ -6,6 +6,7 @@ using Zenject;
 
 public class EndGamePanel : MonoBehaviour, IInitializable
 {
+
     [SerializeField] private TextMeshProUGUI restartText;
     [SerializeField] private TextMeshProUGUI mainMenuText;
     [SerializeField] private TextMeshProUGUI quitText;
@@ -27,9 +28,9 @@ public class EndGamePanel : MonoBehaviour, IInitializable
 
     private void AddListeners()
     {
-        restartText.text = _localization.Translate("endgame.restart");
-        mainMenuText.text = _localization.Translate("endgame.main.menu");
-        quitText.text = _localization.Translate("endgame.quit");
+        restartText.text = _localization.Translate(BaseIds.EndgameRestart);
+        mainMenuText.text = _localization.Translate(BaseIds.EndgameMainMenu);
+        quitText.text = _localization.Translate(BaseIds.EndgameQuit);
     }
     
     private void OnDestroy()

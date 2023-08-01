@@ -8,7 +8,6 @@ namespace root
     {
 
         [SerializeField] private List<EnemyInfo> enemyInfos;
-        [SerializeField] private List<PlayerHitCollider> playerHitColliders;
         [SerializeField] private List<BossInfo> bossInfos;
         [SerializeField] private Enemy enemy;
         [SerializeField] private Player playerPrefab;
@@ -18,7 +17,6 @@ namespace root
         [SerializeField] private EnemyBoss boss;
         [SerializeField] private BossTrigger bossTrigger;
         [SerializeField] private PauseMenu pauseMenu;
-        [SerializeField] private CheckpointSystem checkpointSystem;
 
         public override void InstallBindings()
         {
@@ -32,11 +30,7 @@ namespace root
             Container.BindInterfacesTo<EndGamePanel>().FromInstance(endgamePanel).AsSingle().NonLazy();
             Container.Bind<AudioSystem>().FromInstance(audioSystem).AsSingle().NonLazy();
             Container.Bind<PauseMenu>().FromInstance(pauseMenu).AsSingle().NonLazy();
-            Container.Bind<CheckpointSystem>().FromInstance(checkpointSystem).AsSingle().NonLazy();
-            foreach (var playerHitCollider in playerHitColliders)
-            {
-                Container.Bind<PlayerHitCollider>().FromInstance(playerHitCollider);
-            }
+
             foreach (var enemyInfo in enemyInfos)
             {
                 Container.Bind<EnemyInfo>().FromInstance(enemyInfo);

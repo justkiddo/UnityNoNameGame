@@ -7,7 +7,8 @@ namespace root
 {
     public class MainMenu : MonoBehaviour, IInitializable
     {
-        
+
+
         [SerializeField] private TextMeshProUGUI startText;
         [SerializeField] private TextMeshProUGUI quitText;
         [SerializeField] private TextMeshProUGUI controlsText;
@@ -33,20 +34,19 @@ namespace root
         {
             _disposable = new CompositeDisposable();
             AddListeners();
-            
         }
 
 
         private void AddListeners()
         {
-            startText.text = _localization.Translate("start.button");
-            quitText.text = _localization.Translate("quit.button");
-            controlsText.text = _localization.Translate("settings.controls");
-            menuButtonText.text = _localization.Translate("tab.menu");
-            controlsButtonText.text = _localization.Translate("tab.controls");
-            settingsButtonText.text = _localization.Translate("tab.settings");
-            settingsRuLocaleText.text = _localization.Translate("settings.locales.ru");
-            settingsEnLocaleText.text = _localization.Translate("settings.locales.en");
+            startText.text = _localization.Translate(BaseIds.StartButton);
+            quitText.text = _localization.Translate(BaseIds.QuitButton);
+            controlsText.text = _localization.Translate(BaseIds.SettingsControls);
+            menuButtonText.text = _localization.Translate(BaseIds.TabMenu);
+            controlsButtonText.text = _localization.Translate(BaseIds.TabControls);
+            settingsButtonText.text = _localization.Translate(BaseIds.TabSettings);
+            settingsRuLocaleText.text = _localization.Translate(BaseIds.SettingsLocalesRu);
+            settingsEnLocaleText.text = _localization.Translate(BaseIds.SettingsLocalesEn);
         }
 
 

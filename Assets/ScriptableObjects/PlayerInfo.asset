@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: PlayerInfo
   m_EditorClassIdentifier: 
   <Health>k__BackingField: 100
-  <Speed>k__BackingField: 25
+  <Speed>k__BackingField: 7
   <JumpHeight>k__BackingField: 11
   <Damage>k__BackingField: 15

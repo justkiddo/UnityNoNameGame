@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,6 +15,7 @@ namespace root
         private IUnityLocalization _localization;
         private bool _paused;
 
+        
         [Inject]
         private void Construct(IUnityLocalization localization)
         {
@@ -56,9 +54,10 @@ namespace root
 
         private void AddListeners()
         {
-            quitText.text = _localization.Translate("quit.button");
-            continueButtonText.text = _localization.Translate("pause.continue");
-            menuButtonText.text = _localization.Translate("tab.menu");
+            
+            quitText.text = _localization.Translate(BaseIds.QuitButtonKey);
+            continueButtonText.text = _localization.Translate(BaseIds.PauseContinue);
+            menuButtonText.text = _localization.Translate(BaseIds.TabMenu);
         }
     }
 }

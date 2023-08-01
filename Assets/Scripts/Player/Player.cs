@@ -22,6 +22,7 @@ namespace root
         [SerializeField] private GameObject endgameMenu;
         [SerializeField] private Button attackButton;
         [SerializeField] private CheckpointSystem checkpointSystem;
+        [SerializeField] private Button resetButton;
         
         [Range(0,2)]
         [SerializeField] private int checkpointNo;
@@ -57,8 +58,7 @@ namespace root
         private float _health;
         private float _damage;
         private GameplayInfo _gameplayInfo;
-        private int curCh;
-        private const string SavedCheckpointKey = "SAVED.CHECKPOINT";
+        private int _currentCheckpoint;
         
         [Inject]
         private void Construct(PlayerInfo playerInfo, Enemy enemy, AudioSystem audioSystem, BossInfo bossInfo, GameplayInfo gameplayInfo)
@@ -83,16 +83,17 @@ namespace root
             _mJumpForce = _playerInfo.JumpHeight;
             _damage = _playerInfo.Damage;
             attackButton.onClick.AddListener(Attack);
-            
-            
-            
-            //checkpointSystem.SetCheckpoint(gameObject, checkpointNo);
-           
+            resetButton.onClick.AddListener(ResetPrefs);
+        }
+
+        private void ResetPrefs()
+        {
+            PlayerPrefs.DeleteAll();
         }
 
         private void Awake()
         {
-            transform.position = checkpointSystem._checkpointsList[PlayerPrefs.GetInt(SavedCheckpointKey)].transform.position;
+            transform.position = checkpointSystem._checkpointsList[PlayerPrefs.GetInt(BaseIds.SavedCheckpointKey)].transform.position;
         }
 
         private void AddListeners()
@@ -102,7 +103,7 @@ namespace root
 
         private void OnCheckpointChange()
         {
-            _gameplayInfo.SavedCheckpoint.Value = curCh;
+            _gameplayInfo.SavedCheckpoint.Value = _currentCheckpoint;
         }
 
 
@@ -149,7 +150,6 @@ namespace root
                 }
 
                 _animator.SetFloat(AirSpeedY, _body2d.velocity.y);
-
                 
                 PlayerRoll();
                 PlayerJump();
@@ -338,7 +338,7 @@ namespace root
         {
             if (col.CompareTag("Checkpoint"))
             {
-                curCh = Int32.Parse(col.gameObject.name);
+                _currentCheckpoint = Int32.Parse(col.gameObject.name);
             }
         }
 
