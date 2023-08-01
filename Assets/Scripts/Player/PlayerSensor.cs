@@ -21,7 +21,7 @@ public class PlayerSensor : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.CompareTag("Trigger"))
+        if (!other.CompareTag("Trigger") && !other.CompareTag("Checkpoint"))
         {
             m_ColCount++;
         }
@@ -29,7 +29,7 @@ public class PlayerSensor : MonoBehaviour {
 
     void OnTriggerExit2D(Collider2D other)
     {
-        if (!other.CompareTag("Trigger"))
+        if (!other.CompareTag("Trigger") && !other.CompareTag("Checkpoint"))
         {
             m_ColCount--;
         }

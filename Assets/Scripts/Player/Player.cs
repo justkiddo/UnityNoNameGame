@@ -1,4 +1,5 @@
 ﻿using System;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -23,7 +24,7 @@ namespace root
         [SerializeField] private CheckpointSystem checkpointSystem;
         
         [Range(0,2)]
-        [SerializeField] private int checkpointNo = 0;
+        [SerializeField] private int checkpointNo;
         
         private PlayerInfo _playerInfo;
         private AudioSystem _audioSystem;
@@ -55,11 +56,14 @@ namespace root
         private float _mJumpForce = 7.5f;
         private float _health;
         private float _damage;
+        private GameplayInfo _gameplayInfo;
+        private int curCh;
+        private const string SavedCheckpointKey = "SAVED.CHECKPOINT";
         
-
         [Inject]
-        private void Construct(PlayerInfo playerInfo, Enemy enemy, AudioSystem audioSystem, BossInfo bossInfo)
+        private void Construct(PlayerInfo playerInfo, Enemy enemy, AudioSystem audioSystem, BossInfo bossInfo, GameplayInfo gameplayInfo)
         {
+            _gameplayInfo = gameplayInfo;
             _bossInfo = bossInfo;
             _audioSystem = audioSystem;
             _enemy = enemy;
@@ -79,15 +83,32 @@ namespace root
             _mJumpForce = _playerInfo.JumpHeight;
             _damage = _playerInfo.Damage;
             attackButton.onClick.AddListener(Attack);
-
-            checkpointSystem.SetCheckpoint(gameObject, checkpointNo);
+            
+            
+            
+            //checkpointSystem.SetCheckpoint(gameObject, checkpointNo);
+           
         }
 
+        private void Awake()
+        {
+            transform.position = checkpointSystem._checkpointsList[PlayerPrefs.GetInt(SavedCheckpointKey)].transform.position;
+        }
 
+        private void AddListeners()
+        {
+            _gameplayInfo.SavedCheckpoint.Subscribe(_ => OnCheckpointChange());
+        }
+
+        private void OnCheckpointChange()
+        {
+            _gameplayInfo.SavedCheckpoint.Value = curCh;
+        }
 
 
         void Update()
         {
+            AddListeners();
             if (!_isDead)
             {
                 _timeSinceAttack += Time.deltaTime;
@@ -313,6 +334,15 @@ namespace root
             }
         }
 
+        private void OnTriggerEnter2D(Collider2D col)
+        {
+            if (col.CompareTag("Checkpoint"))
+            {
+                curCh = Int32.Parse(col.gameObject.name);
+            }
+        }
+
+        
         private void OnCollisionEnter2D(Collision2D col)
         {
             if (col.gameObject.CompareTag("Fireball"))

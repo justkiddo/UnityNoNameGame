@@ -668,20 +668,24 @@ PrefabInstance:
       value: Variable Joystick
       objectReference: {fileID: 0}
     - target: {fileID: 3881087803815115470, guid: ec536a7718376554185e4a856d5ae230, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 8ac30d06e56a37b458e8c83969a3d002, type: 3}
+    - target: {fileID: 3881087803815115470, guid: ec536a7718376554185e4a856d5ae230, type: 3}
       propertyPath: m_Color.a
-      value: 0.43137255
+      value: 0.6666667
       objectReference: {fileID: 0}
     - target: {fileID: 3881087803815115470, guid: ec536a7718376554185e4a856d5ae230, type: 3}
       propertyPath: m_Color.b
-      value: 0
+      value: 0.8113208
       objectReference: {fileID: 0}
     - target: {fileID: 3881087803815115470, guid: ec536a7718376554185e4a856d5ae230, type: 3}
       propertyPath: m_Color.g
-      value: 0
+      value: 0.8113208
       objectReference: {fileID: 0}
     - target: {fileID: 3881087803815115470, guid: ec536a7718376554185e4a856d5ae230, type: 3}
       propertyPath: m_Color.r
-      value: 0
+      value: 0.8113208
       objectReference: {fileID: 0}
     - target: {fileID: 3881087803815115471, guid: ec536a7718376554185e4a856d5ae230, type: 3}
       propertyPath: m_SizeDelta.x
@@ -692,20 +696,24 @@ PrefabInstance:
       value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 3881087804030458057, guid: ec536a7718376554185e4a856d5ae230, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 16aa2bd7440a7ee4b99d6be507956335, type: 3}
+    - target: {fileID: 3881087804030458057, guid: ec536a7718376554185e4a856d5ae230, type: 3}
       propertyPath: m_Color.a
-      value: 0.34117648
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3881087804030458057, guid: ec536a7718376554185e4a856d5ae230, type: 3}
       propertyPath: m_Color.b
-      value: 0
+      value: 0.5171769
       objectReference: {fileID: 0}
     - target: {fileID: 3881087804030458057, guid: ec536a7718376554185e4a856d5ae230, type: 3}
       propertyPath: m_Color.g
-      value: 0
+      value: 0.63380206
       objectReference: {fileID: 0}
     - target: {fileID: 3881087804030458057, guid: ec536a7718376554185e4a856d5ae230, type: 3}
       propertyPath: m_Color.r
-      value: 0
+      value: 0.735849
       objectReference: {fileID: 0}
     - target: {fileID: 3881087804030458062, guid: ec536a7718376554185e4a856d5ae230, type: 3}
       propertyPath: m_SizeDelta.x
@@ -927,8 +935,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 223629958}
+  - component: {fileID: 223629959}
   m_Layer: 0
-  m_Name: 2
+  m_Name: 1
   m_TagString: Checkpoint
   m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -942,13 +951,39 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 223629957}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 47.63, y: 0.4, z: 0}
+  m_LocalPosition: {x: 93.12, y: -2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 246946684}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &223629959
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 223629957}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 3.0469701}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 7.9817977}
+  m_EdgeRadius: 0
 --- !u!1 &234207153
 GameObject:
   m_ObjectHideFlags: 0
@@ -1131,6 +1166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2397d89a179d10e4b94dee2d3f183801, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _checkpointsList: []
 --- !u!1 &254064058
 GameObject:
   m_ObjectHideFlags: 0
@@ -18772,8 +18808,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1346484658}
+  - component: {fileID: 1346484660}
   m_Layer: 0
-  m_Name: 1
+  m_Name: 0
   m_TagString: Checkpoint
   m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -18794,6 +18831,32 @@ Transform:
   m_Father: {fileID: 246946684}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1346484660
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1346484657}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 3.3179276}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 7.6358542}
+  m_EdgeRadius: 0
 --- !u!1 &1369887784
 GameObject:
   m_ObjectHideFlags: 0
@@ -18828,7 +18891,7 @@ MonoBehaviour:
   playerHitColliders:
   - {fileID: 1963113241}
   - {fileID: 350154325}
-  _bossInfos:
+  bossInfos:
   - {fileID: 11400000, guid: 7bd1c66d6614a2240b2418ddb9a56598, type: 2}
   enemy: {fileID: 470541014174569002}
   playerPrefab: {fileID: 6824723851876369804}
@@ -18837,7 +18900,8 @@ MonoBehaviour:
   audioSystem: {fileID: 89186056}
   boss: {fileID: 1932497392}
   bossTrigger: {fileID: 765370558}
-  pauseMenu: {fileID: 0}
+  pauseMenu: {fileID: 1854378461}
+  checkpointSystem: {fileID: 246946685}
 --- !u!4 &1369887786
 Transform:
   m_ObjectHideFlags: 0
@@ -34059,8 +34123,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1515848710}
+  - component: {fileID: 1515848711}
   m_Layer: 0
-  m_Name: 3
+  m_Name: 2
   m_TagString: Checkpoint
   m_Icon: {fileID: 8418204508859773708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -34081,6 +34146,32 @@ Transform:
   m_Father: {fileID: 246946684}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1515848711
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1515848709}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 3.5446792}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 8.08936}
+  m_EdgeRadius: 0
 --- !u!1001 &1550527329
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -35757,7 +35848,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3291612548411973932}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.6, y: 0.4, z: 0}
+  m_LocalPosition: {x: -1.63, y: 0.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -37005,7 +37096,7 @@ MonoBehaviour:
   quitButton: {fileID: 7952545989478948849}
   restartButton: {fileID: 7952545988147660703}
   continueButton: {fileID: 0}
-  pauseMenu: {fileID: 0}
+  pauseMenu: {fileID: 1854378456}
 --- !u!114 &7952545989762952373
 MonoBehaviour:
   m_ObjectHideFlags: 0

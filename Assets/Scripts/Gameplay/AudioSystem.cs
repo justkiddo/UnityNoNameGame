@@ -14,7 +14,7 @@ namespace root
         private void Awake()
         {
             _audioSource = GetComponent<AudioSource>();
-            _audioSource.PlayOneShot(gameplayMusicOne, 0.3f);
+            _audioSource.PlayOneShot(gameplayMusicOne, 1f);
         }
 
         public void Jump()
