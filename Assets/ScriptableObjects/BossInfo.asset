@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: BossInfo
   m_EditorClassIdentifier: 
   health: 50
-  damage: 100
+  damage: 6
   fireballSpeed: 3
   prefab: {fileID: 0}

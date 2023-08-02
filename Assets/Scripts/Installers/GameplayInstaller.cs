@@ -23,7 +23,6 @@ namespace root
             Container.BindInterfacesAndSelfTo<GameplayInfo>().AsSingle().NonLazy();
             Container.Bind<BossTrigger>().FromInstance(bossTrigger).AsSingle().NonLazy();
             Container.Bind<EnemyBoss>().FromInstance(boss).AsSingle().NonLazy();
-            Container.Bind<IUnityLocalization>().To<UnityLocalization>().AsSingle().NonLazy();
             Container.Bind<PlayerInfo>().FromInstance(playerInfo);
             Container.Bind<Enemy>().FromInstance(enemy).AsSingle().NonLazy();
             Container.Bind<IPlayer>().FromInstance(playerPrefab);

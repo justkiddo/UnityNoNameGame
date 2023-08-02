@@ -67,7 +67,7 @@ public class SceneChanger : MonoBehaviour
         {
             _clickBlocker = true;
             StartCoroutine(ClickAwait());
-        SceneManager.LoadScene("Scenes/GameScene");
+        SceneManager.LoadScene("Scenes/GameScene", LoadSceneMode.Additive);
         _clickBlocker = false;
         Time.timeScale = 1f;
         }
