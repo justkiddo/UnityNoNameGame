@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using TMPro;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,6 +25,8 @@ namespace root
         [SerializeField] private Button attackButton;
         [SerializeField] private CheckpointSystem checkpointSystem;
         [SerializeField] private Button resetButton;
+        [SerializeField] private GameObject checkpointParticlePrefab;
+        [SerializeField] private GameObject saveText;
         
         [Range(0,2)]
         [SerializeField] private int checkpointNo;
@@ -60,6 +64,7 @@ namespace root
         private GameplayInfo _gameplayInfo;
         private int _currentCheckpoint;
         
+
         [Inject]
         private void Construct(PlayerInfo playerInfo, Enemy enemy, AudioSystem audioSystem, BossInfo bossInfo, GameplayInfo gameplayInfo)
         {
@@ -332,6 +337,7 @@ namespace root
                     endgameMenu.SetActive(true);
                 }
             }
+            
         }
 
         private void OnTriggerEnter2D(Collider2D col)
@@ -339,10 +345,22 @@ namespace root
             if (col.CompareTag("Checkpoint"))
             {
                 _currentCheckpoint = Int32.Parse(col.gameObject.name);
+                if (col.gameObject.name != _gameplayInfo.SavedCheckpoint.Value.ToString())
+                {
+                    Instantiate(checkpointParticlePrefab, transform.position, Quaternion.identity);
+                    saveText.SetActive(true);
+                    StartCoroutine(SaveTextAwait());
+                }
             }
         }
 
-        
+        private IEnumerator SaveTextAwait()
+        {
+            yield return new WaitForSeconds(2);
+            saveText.SetActive(false);
+        }
+
+
         private void OnCollisionEnter2D(Collision2D col)
         {
             if (col.gameObject.CompareTag("Fireball"))

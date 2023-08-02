@@ -18,4 +18,7 @@ public class BaseIds
     public const string TabSettings = "tab.settings";
     public const string SettingsLocalesRu = "settings.locales.ru";
     public const string SettingsLocalesEn = "settings.locales.en";
+    public const string GameplayAttack = "gameplay.attack";
+    public const string GameplayBlock = "gameplay.block";
+    public const string GameplaySave = "gameplay.save";
 }

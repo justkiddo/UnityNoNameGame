@@ -63,6 +63,18 @@ MonoBehaviour:
     m_Key: pause.continue
     m_Metadata:
       m_Items: []
+  - m_Id: 15242794514509824
+    m_Key: gameplay.attack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15242829159460864
+    m_Key: gameplay.block
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15247898789539840
+    m_Key: gameplay.save
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

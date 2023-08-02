@@ -7,11 +7,18 @@ namespace root
 {
     public class PauseMenu : MonoBehaviour
     {
+        
+
         [SerializeField] private Button pauseButton;
         [SerializeField] private TextMeshProUGUI continueButtonText;
         [SerializeField] private TextMeshProUGUI menuButtonText;
         [SerializeField] private TextMeshProUGUI quitText;
         [SerializeField] private GameObject pauseMenu;
+        [SerializeField] private TextMeshProUGUI attackButtonText;
+        [SerializeField] private TextMeshProUGUI blockButtonText;
+        [SerializeField] private TextMeshProUGUI gameSavedText;
+        
+        
         private IUnityLocalization _localization;
         private bool _paused;
 
@@ -54,10 +61,13 @@ namespace root
 
         private void AddListeners()
         {
-            
             quitText.text = _localization.Translate(BaseIds.QuitButtonKey);
             continueButtonText.text = _localization.Translate(BaseIds.PauseContinue);
             menuButtonText.text = _localization.Translate(BaseIds.TabMenu);
+            attackButtonText.text = _localization.Translate(BaseIds.GameplayAttack);
+            blockButtonText.text = _localization.Translate(BaseIds.GameplayBlock);
+            gameSavedText.text = _localization.Translate(BaseIds.GameplaySave);
+            
         }
     }
 }
