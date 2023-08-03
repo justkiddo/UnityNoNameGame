@@ -44,9 +44,9 @@ namespace root
             _startTime = Time.time;
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _animator = GetComponent<Animator>();
-            _health = _bossInfo.health;
-            _damage = _bossInfo.damage;
-            _fireballSpeed = _bossInfo.fireballSpeed;
+            _health = _bossInfo.Health;
+            _damage = _bossInfo.Damage;
+            _fireballSpeed = _bossInfo.FireballSpeed;
             _tempHealth = _health;
         }
 

@@ -14,22 +14,22 @@ namespace root
         private void Awake()
         {
             _audioSource = GetComponent<AudioSource>();
-            _audioSource.PlayOneShot(gameplayMusicOne, 1f);
+            
         }
 
         public void Jump()
         {
-            _audioSource.PlayOneShot(jumpSound, 0.6f);
+            _audioSource.PlayOneShot(jumpSound);
         }
 
         public void Attack()
         {
-            _audioSource.PlayOneShot(attackSound, 0.6f);
+            _audioSource.PlayOneShot(attackSound);
         }
         
         public void MissedAttack()
         {
-            _audioSource.PlayOneShot(missedAttackSound, 0.6f);
+            _audioSource.PlayOneShot(missedAttackSound);
         }
         
     }

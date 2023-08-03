@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using root;
+﻿using root;
 using UnityEngine;
 using UnityEngine.EventSystems;
 

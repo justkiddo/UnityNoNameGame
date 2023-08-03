@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using TMPro;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,27 +19,24 @@ namespace root
         private static readonly int Hurt = Animator.StringToHash("Hurt");
         private static readonly int Death = Animator.StringToHash("Death");
         
-        [SerializeField] float rollForce = 6.0f;
+        [SerializeField] private float rollForce = 6.0f;
         [SerializeField] private GameObject endgameMenu;
         [SerializeField] private Button attackButton;
         [SerializeField] private CheckpointSystem checkpointSystem;
         [SerializeField] private Button resetButton;
         [SerializeField] private GameObject checkpointParticlePrefab;
         [SerializeField] private GameObject saveText;
-        
-        [Range(0,2)]
-        [SerializeField] private int checkpointNo;
+        [SerializeField] private PlayerHitCollider hitColliderL1;
+        [SerializeField] private PlayerHitCollider hitColliderR1;
+        [SerializeField] private PlayerSensor mGroundPlayerSensor;
         
         private PlayerInfo _playerInfo;
         private AudioSystem _audioSystem;
         private Enemy _enemy;
         private SpriteRenderer _spriteRenderer;
-        private PlayerHitCollider _hitColliderL1;
-        private PlayerHitCollider _hitColliderR1;
         public VariableJoystick variableJoystick;
         private Animator _animator;
         private Rigidbody2D _body2d;
-        private PlayerSensor _mGroundPlayerSensor;
         private BossInfo _bossInfo;
         
         private readonly bool _isWallSliding = false;
@@ -66,12 +62,11 @@ namespace root
         
 
         [Inject]
-        private void Construct(PlayerInfo playerInfo, Enemy enemy, AudioSystem audioSystem, BossInfo bossInfo, GameplayInfo gameplayInfo)
+        private void Construct(PlayerInfo playerInfo, AudioSystem audioSystem, BossInfo bossInfo, GameplayInfo gameplayInfo)
         {
             _gameplayInfo = gameplayInfo;
             _bossInfo = bossInfo;
             _audioSystem = audioSystem;
-            _enemy = enemy;
             _playerInfo = playerInfo;
         }
         
@@ -80,9 +75,6 @@ namespace root
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _animator = GetComponent<Animator>();
             _body2d = GetComponent<Rigidbody2D>();
-            _mGroundPlayerSensor = transform.Find("GroundSensor").GetComponent<PlayerSensor>();
-            _hitColliderL1 = transform.Find("HitCollider L1").GetComponent<PlayerHitCollider>();
-            _hitColliderR1 = transform.Find("HitCollider R1").GetComponent<PlayerHitCollider>();
             _health = _playerInfo.Health;
             _mSpeed = _playerInfo.Speed;
             _mJumpForce = _playerInfo.JumpHeight;
@@ -125,13 +117,13 @@ namespace root
                 if (_rollCurrentTime > _rollDuration)
                     _isRolling = false;
 
-                if (!_isGrounded && _mGroundPlayerSensor.State())
+                if (!_isGrounded && mGroundPlayerSensor.State())
                 {
                     _isGrounded = true;
                     _animator.SetBool(Grounded, _isGrounded);
                 }
 
-                if (_isGrounded && !_mGroundPlayerSensor.State())
+                if (_isGrounded && !mGroundPlayerSensor.State())
                 {
                     _isGrounded = false;
                     _animator.SetBool(Grounded, _isGrounded);
@@ -223,7 +215,7 @@ namespace root
                 _isGrounded = false;
                 _animator.SetBool(Grounded, _isGrounded);
                 _body2d.velocity = new Vector2(_body2d.velocity.x, _mJumpForce);
-                _mGroundPlayerSensor.Disable(0.2f);
+                mGroundPlayerSensor.Disable(0.2f);
             }
         }
 
@@ -245,11 +237,11 @@ namespace root
                 _isBlocking = true;
 
 
-                if (_hitColliderL1.enemies.Find(x => x.CompareTag("Enemy")) && _spriteRenderer.flipX)
+                if (hitColliderL1.enemies.Find(x => x.CompareTag("Enemy")) && _spriteRenderer.flipX)
                 {
                     _immunity = true;
                 }
-                else if (_hitColliderR1.enemies.Find(x => x.CompareTag("Enemy")) &&
+                else if (hitColliderR1.enemies.Find(x => x.CompareTag("Enemy")) &&
                          _spriteRenderer.flipX == false)
                 {
                     _immunity = true;
@@ -277,17 +269,17 @@ namespace root
             if ( _spriteRenderer.flipX)
             {
 
-                    foreach (var enemy in _hitColliderL1.enemies)
+                    foreach (var enemy in hitColliderL1.enemies)
                     {
-                        if (_hitColliderL1.enemy)
+                        if (hitColliderL1.enemy)
                         {
                             enemy.TakeDamage(_damage);
                             hit = true;
                         }
                     }
-                    foreach (var boss in _hitColliderL1.enemyBosses)
+                    foreach (var boss in hitColliderL1.enemyBosses)
                     {
-                        if (_hitColliderL1.boss)
+                        if (hitColliderL1.boss)
                         {
                             boss.TakeDamage(_damage);
                             hit = true;
@@ -297,18 +289,18 @@ namespace root
             }
             else if ( _spriteRenderer.flipX == false)
             {
-                foreach (var enemy in _hitColliderR1.enemies)
+                foreach (var enemy in hitColliderR1.enemies)
                 {
-                    if (_hitColliderR1.enemy)
+                    if (hitColliderR1.enemy)
                     {
                         enemy.TakeDamage(_damage);
                         hit = true;
                     }
                 }
                 
-                foreach (var boss in _hitColliderR1.enemyBosses)
+                foreach (var boss in hitColliderR1.enemyBosses)
                 {
-                    if (_hitColliderR1.boss)
+                    if (hitColliderR1.boss)
                     {
                         boss.TakeDamage(_damage);
                         hit = true;
@@ -365,7 +357,7 @@ namespace root
         {
             if (col.gameObject.CompareTag("Fireball"))
             {
-                TakeDamage(_bossInfo.damage);
+                TakeDamage(_bossInfo.Damage);
             }
         }
 

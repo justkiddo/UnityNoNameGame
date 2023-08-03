@@ -5,8 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Tools/BossInfo", fileName = "BossInfo")]
 public class BossInfo : ScriptableObject
 {
-    [field: SerializeField] public float health;
-    [field: SerializeField] public int damage;
-    [field: SerializeField] public float fireballSpeed;
-    [field: SerializeField] public GameObject prefab;
+    [field: SerializeField] public float Health{ get; private set; }
+    [field: SerializeField] public int Damage{ get; private set; }
+    [field: SerializeField] public float FireballSpeed{ get; private set; }
 }

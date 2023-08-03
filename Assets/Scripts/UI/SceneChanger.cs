@@ -32,7 +32,8 @@ public class SceneChanger : MonoBehaviour
 
     private void OnRestartButtonClick()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene("MainMenuScene");
+        SceneManager.LoadScene("GameScene", LoadSceneMode.Additive);
         Time.timeScale = 1f;
         _clickBlocker = false;
     }
@@ -43,7 +44,7 @@ public class SceneChanger : MonoBehaviour
         {
             _clickBlocker = true;
             StartCoroutine(ClickAwait());
-            SceneManager.LoadScene("Scenes/MainMenuScene");
+            SceneManager.LoadScene("MainMenuScene");
             Time.timeScale = 1f;
             _clickBlocker = false;
         }
@@ -67,7 +68,7 @@ public class SceneChanger : MonoBehaviour
         {
             _clickBlocker = true;
             StartCoroutine(ClickAwait());
-        SceneManager.LoadScene("Scenes/GameScene", LoadSceneMode.Additive);
+        SceneManager.LoadScene("GameScene", LoadSceneMode.Additive);
         _clickBlocker = false;
         Time.timeScale = 1f;
         }
