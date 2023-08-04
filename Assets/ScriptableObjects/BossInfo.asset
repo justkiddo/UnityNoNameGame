@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c1e98ad7a833be4982ff8cf6ca5fbc4, type: 3}
   m_Name: BossInfo
   m_EditorClassIdentifier: 
-  health: 50
-  damage: 6
-  fireballSpeed: 3
-  prefab: {fileID: 0}
+  <Health>k__BackingField: 100
+  <Damage>k__BackingField: 5
+  <FireballSpeed>k__BackingField: 7
