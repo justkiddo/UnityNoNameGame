@@ -21,7 +21,6 @@ namespace root
         
         [SerializeField] private float rollForce = 6.0f;
         [SerializeField] private GameObject endgameMenu;
-        [SerializeField] private Button attackButton;
         [SerializeField] private CheckpointSystem checkpointSystem;
         [SerializeField] private Button resetButton;
         [SerializeField] private GameObject checkpointParticlePrefab;
@@ -34,7 +33,6 @@ namespace root
         private AudioSystem _audioSystem;
         private Enemy _enemy;
         private SpriteRenderer _spriteRenderer;
-        public VariableJoystick variableJoystick;
         private Animator _animator;
         private Rigidbody2D _body2d;
         private BossInfo _bossInfo;
@@ -79,7 +77,6 @@ namespace root
             _mSpeed = _playerInfo.Speed;
             _mJumpForce = _playerInfo.JumpHeight;
             _damage = _playerInfo.Damage;
-            attackButton.onClick.AddListener(Attack);
             resetButton.onClick.AddListener(ResetPrefs);
         }
 
@@ -110,7 +107,8 @@ namespace root
             if (!_isDead)
             {
                 _timeSinceAttack += Time.deltaTime;
-
+                float inputX = Input.GetAxis("Horizontal");
+                
                 if (_isRolling)
                     _rollCurrentTime += Time.deltaTime;
 
@@ -129,13 +127,13 @@ namespace root
                     _animator.SetBool(Grounded, _isGrounded);
                 }
 
-                if (variableJoystick.Horizontal > 0)
+                if (inputX > 0)
                 {
                     _spriteRenderer.flipX = false;
                     _facingDirection = 1;
                 }
 
-                else if (variableJoystick.Horizontal < 0)
+                else if (inputX < 0)
                 {
                     _spriteRenderer.flipX = true;
                     _facingDirection = -1;
@@ -143,7 +141,7 @@ namespace root
 
                 if (!_isRolling && !_isBlocking)
                 {
-                    _body2d.velocity = new Vector2(variableJoystick.Horizontal * _mSpeed, _body2d.velocity.y);
+                    _body2d.velocity = new Vector2(inputX * _mSpeed, _body2d.velocity.y);
                 }
 
                 _animator.SetFloat(AirSpeedY, _body2d.velocity.y);
@@ -151,13 +149,14 @@ namespace root
                 PlayerRoll();
                 PlayerJump();
                 PlayerBlock();
-                PlayerRun(variableJoystick.Horizontal);
+                PlayerRun(inputX);
+                Attack();
             }
         }
 
         private void Attack()
         {
-            if (!_isDead)
+            if (!_isDead && Input.GetKeyDown(KeyCode.Z))
             {
                 if (_timeSinceAttack > 0.25f && !_isRolling)
                 {
@@ -209,7 +208,7 @@ namespace root
 
         private void PlayerJump()
         {
-            if (variableJoystick.Vertical > 0 && _isGrounded && !_isRolling)
+            if (Input.GetKeyDown(KeyCode.Space) && _isGrounded && !_isRolling)
             {
                 _animator.SetTrigger(Jump);
                 _isGrounded = false;
@@ -219,10 +218,9 @@ namespace root
             }
         }
 
-        // REWORK__________________________________________________________
         private void PlayerRoll()
         {
-            if (Input.GetKeyDown("left shift") && !_isRolling && !_isWallSliding && _rollingAvailable)
+            if (Input.GetKeyDown(KeyCode.LeftShift) && !_isRolling && !_isWallSliding && _rollingAvailable)
             {
                 _isRolling = true;
                 _animator.SetTrigger(Roll);
@@ -232,7 +230,7 @@ namespace root
 
         private void PlayerBlock()
         {
-            if (PlayerBlockEvent.ButtonPressed && !_isRolling && _isGrounded && !_isDead)
+            if (Input.GetKeyDown(KeyCode.C) && !_isRolling && _isGrounded && !_isDead)
             {
                 _isBlocking = true;
 
@@ -255,7 +253,7 @@ namespace root
                 _animator.SetTrigger(Block);
                 _animator.SetBool(IdleBlock, true);
             }
-            else if (!PlayerBlockEvent.ButtonPressed)
+            else
             {
                 _isBlocking = false;
                 _immunity = false;
