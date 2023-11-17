@@ -58,7 +58,7 @@ namespace root
         {
             DamageCheck();
             DeathCheck();
-            AttackPlayer();
+            
             DistanceCheck();
         }
 
@@ -70,6 +70,12 @@ namespace root
                 follow = true;
                 _patrolling = false;
                 FollowPlayer();
+            }
+            else if (transform.position.x - _player.GetCurrentPosition().x <= 1 &&
+                     transform.position.x - _player.GetCurrentPosition().x >= -1)
+            {
+                follow = false;
+                AttackPlayer();
             }
             else
             {
@@ -222,9 +228,12 @@ namespace root
         
         private void FollowPlayer()
         {
+            follow = true;
+            
             if (follow 
                 && _player.GetHealth() >= 0 && _health > 0)
             {
+                
                 FLipCheck(_player.GetCurrentPosition());
                 _patrolling = false;
                 _animator.SetInteger("AnimState", 2);

@@ -253,7 +253,7 @@ namespace root
                 _animator.SetTrigger(Block);
                 _animator.SetBool(IdleBlock, true);
             }
-            else
+            else if (Input.GetKeyUp(KeyCode.C))
             {
                 _isBlocking = false;
                 _immunity = false;
