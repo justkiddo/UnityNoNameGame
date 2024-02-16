@@ -22,7 +22,7 @@ namespace root
         private float _tempHealth;
         private bool _damageTaken;
         private Collider2D _enemyCollider2D;
-        private Rigidbody2D rb;
+        private Rigidbody2D _rb;
         private bool _attacking;
         
         private Vector3 _spawnPos;
@@ -47,7 +47,7 @@ namespace root
             _damage = _enemyInfo.Damage;
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _animator = GetComponent<Animator>();
-            rb = GetComponent<Rigidbody2D>();
+            _rb = GetComponent<Rigidbody2D>();
             _tempHealth = _health;
             _patrolling = true;
         }
@@ -58,7 +58,7 @@ namespace root
         {
             DamageCheck();
             DeathCheck();
-            
+            AttackPlayer();
             DistanceCheck();
         }
 
@@ -149,7 +149,7 @@ namespace root
                 yield break;
                 
             }
-            yield return new WaitForSeconds(0.6f);
+            yield return new WaitForSeconds(1.2f);
             
             _attacking = false;
             if (enemyHitColliderL1.playerNear | enemyHitColliderR1.playerNear && !_attacking && _player.GetHealth() > 0)
@@ -165,7 +165,7 @@ namespace root
                 follow = false;
                 _patrolling = false;
                 _attacking = true;
-                rb.simulated = false;
+                _rb.simulated = false;
                 _animator.SetTrigger("Death");
                 StopCoroutine(ResetTriggerAttack());
                 StartCoroutine(DestroyEnemy());
@@ -197,7 +197,7 @@ namespace root
                 _tempHealth = _health;
                 
                 Vector3 dir = (_player.GetCurrentPosition() - transform.position);
-                rb.velocity = -dir * 2;
+                _rb.velocity = -dir * 2;
                 
                 
                 StartCoroutine(ResetTriggerHurt());

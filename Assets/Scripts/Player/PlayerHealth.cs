@@ -11,15 +11,15 @@ namespace root
 
         private float _playerHp;
         private bool oneTime = true;
-        
+
+        private void Awake()
+        {
+            _playerHp = GetComponent<Player>().GetHealth();
+        }
+
 
         private void Update()
         {
-            if (oneTime)
-            {
-                _playerHp = GetComponent<Player>().GetHealth();
-                oneTime = false;
-            }
             HealthSetup();
         }
 

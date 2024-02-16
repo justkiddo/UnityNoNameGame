@@ -983,7 +983,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &246946684
 Transform:
   m_ObjectHideFlags: 0
@@ -37303,7 +37303,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1458972102
 Transform:
   m_ObjectHideFlags: 0
@@ -39156,6 +39156,7 @@ MonoBehaviour:
   hitColliderL1: {fileID: 1963113241}
   hitColliderR1: {fileID: 350154325}
   mGroundPlayerSensor: {fileID: 7453177592556734923}
+  _audioSystem: {fileID: 89186056}
 --- !u!70 &6824723851876369805
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
