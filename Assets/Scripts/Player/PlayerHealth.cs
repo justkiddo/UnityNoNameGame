@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -6,25 +7,25 @@ namespace root
 {
     public class PlayerHealth : MonoBehaviour
     {
-        private IPlayer _player;
         [SerializeField] private Image health;
-        
-        [Inject]
-        private void Construct(IPlayer player)
-        {
-            _player = player;
-        }
 
+        private float _playerHp;
+        private bool oneTime = true;
+        
 
         private void Update()
         {
+            if (oneTime)
+            {
+                _playerHp = GetComponent<Player>().GetHealth();
+                oneTime = false;
+            }
             HealthSetup();
         }
 
         private void HealthSetup()
         {
-            var playerHp = _player.GetHealth();
-            health.fillAmount = playerHp/100;
+            health.fillAmount = _playerHp/100;
         }
     }
 }

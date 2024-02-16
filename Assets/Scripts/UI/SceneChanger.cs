@@ -12,7 +12,6 @@ public class SceneChanger : MonoBehaviour
     [SerializeField] private Button continueButton;
     [SerializeField] private GameObject pauseMenu;
     
-    private bool _clickBlocker = false;
 
     private void Awake()
     {
@@ -33,50 +32,28 @@ public class SceneChanger : MonoBehaviour
     private void OnRestartButtonClick()
     {
         SceneManager.LoadScene("MainMenuScene");
-        SceneManager.LoadScene("GameScene", LoadSceneMode.Additive);
+        // additive
+        SceneManager.LoadScene("GameScene", LoadSceneMode.Single);
         Time.timeScale = 1f;
-        _clickBlocker = false;
     }
 
     private void OnBackButtonClick()
     {
-        if (_clickBlocker == false)
-        {
-            _clickBlocker = true;
-            StartCoroutine(ClickAwait());
             SceneManager.LoadScene("MainMenuScene");
             Time.timeScale = 1f;
-            _clickBlocker = false;
-        }
     }
 
     private void OnQuitButtonsClick()
     {
-        if (_clickBlocker == false)
-        {
-            _clickBlocker = true;
-            StartCoroutine(ClickAwait());
             Application.Quit();
-            _clickBlocker = false;
-        }
     }
 
 
     private void OnStartButtonsClick()
     {
-        if (_clickBlocker == false)
-        {
-            _clickBlocker = true;
-            StartCoroutine(ClickAwait());
-        SceneManager.LoadScene("GameScene", LoadSceneMode.Additive);
-        _clickBlocker = false;
+            //additive
+            SceneManager.LoadScene("GameScene", LoadSceneMode.Single);
         Time.timeScale = 1f;
-        }
-    }
-
-    private IEnumerator ClickAwait()
-    {
-        yield return new WaitForSeconds(1);
-        
     }
 }
+

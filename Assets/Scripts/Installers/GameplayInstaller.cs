@@ -20,6 +20,7 @@ namespace root
 
         public override void InstallBindings()
         {
+            Container.Bind<IUnityLocalization>().To<UnityLocalization>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<GameplayInfo>().AsSingle().NonLazy();
             Container.Bind<BossTrigger>().FromInstance(bossTrigger).AsSingle().NonLazy();
             Container.Bind<EnemyBoss>().FromInstance(boss).AsSingle().NonLazy();

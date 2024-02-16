@@ -30,7 +30,7 @@ namespace root
         [SerializeField] private PlayerSensor mGroundPlayerSensor;
         
         private PlayerInfo _playerInfo;
-        private AudioSystem _audioSystem;
+        [SerializeField] private AudioSystem _audioSystem;
         private Enemy _enemy;
         private SpriteRenderer _spriteRenderer;
         private Animator _animator;
@@ -60,11 +60,10 @@ namespace root
         
 
         [Inject]
-        private void Construct(PlayerInfo playerInfo, AudioSystem audioSystem, BossInfo bossInfo, GameplayInfo gameplayInfo)
+        private void Construct(PlayerInfo playerInfo, BossInfo bossInfo, GameplayInfo gameplayInfo)
         {
             _gameplayInfo = gameplayInfo;
             _bossInfo = bossInfo;
-            _audioSystem = audioSystem;
             _playerInfo = playerInfo;
         }
         
@@ -85,15 +84,7 @@ namespace root
             PlayerPrefs.DeleteAll();
         }
 
-        private void Awake()
-        {
-            transform.position = checkpointSystem._checkpointsList[PlayerPrefs.GetInt(BaseIds.SavedCheckpointKey)].transform.position;
-        }
 
-        private void AddListeners()
-        {
-            _gameplayInfo.SavedCheckpoint.Subscribe(_ => OnCheckpointChange());
-        }
 
         private void OnCheckpointChange()
         {
@@ -103,7 +94,6 @@ namespace root
 
         void Update()
         {
-            AddListeners();
             if (!_isDead)
             {
                 _timeSinceAttack += Time.deltaTime;
