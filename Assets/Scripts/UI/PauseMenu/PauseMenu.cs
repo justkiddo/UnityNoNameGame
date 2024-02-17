@@ -35,10 +35,7 @@ namespace root
 
         private void Update()
         {
-            if (!pauseMenu.activeInHierarchy)
-            {
-                _paused = false;
-            }
+
         }
 
         private void OnPauseClick()

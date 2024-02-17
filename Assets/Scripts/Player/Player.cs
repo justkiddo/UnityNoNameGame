@@ -28,9 +28,10 @@ namespace root
         [SerializeField] private PlayerHitCollider hitColliderL1;
         [SerializeField] private PlayerHitCollider hitColliderR1;
         [SerializeField] private PlayerSensor mGroundPlayerSensor;
-        
-        private PlayerInfo _playerInfo;
+        [SerializeField] private Image health;
         [SerializeField] private AudioSystem _audioSystem;
+
+        private PlayerInfo _playerInfo;
         private Enemy _enemy;
         private SpriteRenderer _spriteRenderer;
         private Animator _animator;
@@ -77,6 +78,12 @@ namespace root
             _mJumpForce = _playerInfo.JumpHeight;
             _damage = _playerInfo.Damage;
             resetButton.onClick.AddListener(ResetPrefs);
+            transform.position = checkpointSystem._checkpointsList[_gameplayInfo.SavedCheckpoint.Value].gameObject.transform.position;
+        }
+
+        private void Awake()
+        {
+           
         }
 
         private void ResetPrefs()
@@ -141,7 +148,13 @@ namespace root
                 PlayerBlock();
                 PlayerRun(inputX);
                 Attack();
+                HealthSetup();
             }
+        }
+
+        private void HealthSetup()
+        {
+            health.fillAmount = _health/100;
         }
 
         private void Attack()
@@ -324,11 +337,12 @@ namespace root
         {
             if (col.CompareTag("Checkpoint"))
             {
-                _currentCheckpoint = Int32.Parse(col.gameObject.name);
                 if (col.gameObject.name != _gameplayInfo.SavedCheckpoint.Value.ToString())
                 {
+                    _currentCheckpoint = Int32.Parse(col.gameObject.name);
                     Instantiate(checkpointParticlePrefab, transform.position, Quaternion.identity);
                     saveText.SetActive(true);
+                    OnCheckpointChange();
                     StartCoroutine(SaveTextAwait());
                 }
             }
@@ -336,7 +350,7 @@ namespace root
 
         private IEnumerator SaveTextAwait()
         {
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(1);
             saveText.SetActive(false);
         }
 
