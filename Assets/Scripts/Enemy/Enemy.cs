@@ -155,6 +155,8 @@ namespace root
             if (enemyHitColliderL1.playerNear | enemyHitColliderR1.playerNear && !_attacking && _player.GetHealth() > 0)
             {
                 _player.TakeDamage(_damage);
+                yield return new WaitForSeconds(1.2f);
+                _animator.ResetTrigger("Attack");
             }
         }
 
