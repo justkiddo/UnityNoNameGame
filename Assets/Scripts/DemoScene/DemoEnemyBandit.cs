@@ -100,14 +100,14 @@ namespace root
 
         private void Attacking()
         {
-            _animator.SetInteger("AnimState", 1);
-            if (Vector2.Distance(transform.position, _demoPlayer.GetCurrentPosition()) > 1f)
+            if (Vector2.Distance(transform.position, _demoPlayer.GetCurrentPosition()) > 1.3f)
             {
                 StartCoroutine(AttackAwait());
             }
 
             if (!_hit)
             {
+                _hit = true;
                 _animator.SetTrigger("Attack");
                 StartCoroutine(AttackReset());
             }
@@ -116,15 +116,17 @@ namespace root
 
         private IEnumerator AttackReset()
         {
-            yield return new WaitForSeconds(2);
-            _animator.ResetTrigger("Attack");
+            
+            yield return new WaitForSeconds(0.7f);
             _hit = false;
+            _animator.ResetTrigger("Attack");
         }
 
         private IEnumerator AttackAwait()
         {
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(1f);
             _attacking = false;
+            _animator.ResetTrigger("Attack");
         }
         
 

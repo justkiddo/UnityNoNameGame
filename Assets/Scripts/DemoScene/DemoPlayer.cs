@@ -23,6 +23,7 @@ namespace root
         [SerializeField] private PlayerHitCollider hitColliderL1;
         [SerializeField] private PlayerHitCollider hitColliderR1;
         [SerializeField] private PlayerSensor mGroundPlayerSensor;
+        [SerializeField] private ParticleSystem TPparticle;
 
         private DemoPlayerInfo _playerInfo;
         private DemoEnemyBandit _enemy;
@@ -51,7 +52,9 @@ namespace root
         private float _damage;
         private GameplayInfo _gameplayInfo;
         private int _currentCheckpoint;
-
+        private bool altered;
+        private bool TPblock;
+        
         [Inject]
         private void Construct(DemoPlayerInfo playerInfo)
         {
@@ -68,14 +71,7 @@ namespace root
             _mJumpForce = _playerInfo.JumpHeight;
             _damage = _playerInfo.Damage;
         }
-
-
-        private void ResetPrefs()
-        {
-            PlayerPrefs.DeleteAll();
-        }
-
-
+        
 
         private void OnCheckpointChange()
         {
@@ -85,6 +81,7 @@ namespace root
 
         void Update()
         {
+            Teleport();
             if (!_isDead)
             {
                 _timeSinceAttack += Time.deltaTime;
@@ -133,6 +130,36 @@ namespace root
                 PlayerRun(inputX);
                 Attack();
             }
+        }
+
+        private void Teleport()
+        {
+            if (Input.GetKeyUp(KeyCode.E) && !TPblock)
+            {
+                TPblock = true;
+                Instantiate(TPparticle, transform.position, Quaternion.identity);
+                StartCoroutine(TPAwait());
+            }
+        }
+
+        private IEnumerator TPAwait()
+        {
+            yield return new WaitForSeconds(0.6f);
+            if (altered == false)
+            {
+                
+                var position = transform.position;
+                transform.position = new Vector3(position.x,position.y - 30f,position.z);
+                altered = true;
+                    
+            } else if (altered)
+            {
+                var position = transform.position;
+                transform.position = new Vector3(position.x,position.y + 30f,position.z);
+                altered = false;
+            }
+
+            TPblock = false;
         }
 
 
